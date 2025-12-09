@@ -1,2 +1,7 @@
 node_modules/
+
+# Compiled javascript
+dist/
+
+# Auto-generated file in MacOS
 .DS_STORE
