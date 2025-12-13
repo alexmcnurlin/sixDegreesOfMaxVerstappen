@@ -1,27 +1,22 @@
 export const drivers = [
     {
         id: "maxVerstappen",
-        firstName: "Max",
-        lastName: "Verstappen",
+        name: "Max Verstappen",
         teammates: [
             "yukiTsunoda",
-            "carlosSainzJr",
-            "charlesLeclerc",
-            "lewisHamilton"
+            "carlosSainzJr"
         ]
     },
     {
         id: "yukiTsunoda",
-        firstName: "Yuki",
-        lastName: "Tsunoda",
+        name: "Yuki Tsunoda",
         teammates: [
             "maxVerstappen"
         ]
     },
     {
         id: "carlosSainzJr",
-        firstName: "Carlos",
-        lastName: "Sainz Jr.",
+        name: "Carlos Sainz Jr.",
         teammates: [
             "maxVerstappen",
             "charlesLeclerc"
@@ -29,8 +24,7 @@ export const drivers = [
     },
     {
         id: "charlesLeclerc",
-        firstName: "Charles",
-        lastName: "Leclerc",
+        name: "Charles Leclerc",
         teammates: [
             "charlesLeclerc",
             "lewisHamilton"
@@ -38,8 +32,7 @@ export const drivers = [
     },
     {
         id: "lewisHamilton",
-        firstName: "Lewis",
-        lastName: "Hamilton",
+        name: "Lewis Hamilton",
         teammates: [
             "charlesLeclerc"
         ]

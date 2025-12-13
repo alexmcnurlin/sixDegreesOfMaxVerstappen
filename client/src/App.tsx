@@ -2,14 +2,14 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useState } from "react";
 import "./App.css";
-import { Autocomplete, Card } from "@mui/joy";
+import { Autocomplete, Card, useColorScheme } from "@mui/joy";
+import type { Maybe } from "graphql/jsutils/Maybe";
 
 const GET_DRIVERS = gql`
   query GetDrivers {
     drivers {
       id
-      firstName
-      lastName
+      name
     }
   }
 `;
@@ -17,24 +17,44 @@ const GET_DRIVERS = gql`
 const GET_DEGREES = gql`
   query GetDegreesOfSeparation($driver1: String, $driver2: String) {
     degreesOfSeparation(driver1: $driver1, driver2: $driver2) {
-      id
-      firstName
-      lastName
+      driver1 {
+        name
+      }
+      driver2 {
+        name
+      }
+      dates {
+        start
+        end
+      }
     }
   }
 `;
 
+// We don't have any codegen set up to provide the types for our queries, so
+// lets manually recreate them here.
 type Driver = {
   id: string;
-  firstName: string;
-  lastName: string;
+  name: string;
+};
+
+type Pairing = {
+  driver1: Driver;
+  driver2: Driver;
+  dates: DateRange[];
+};
+
+type DateRange = {
+  start: number;
+  end: number;
 };
 
 const App = () => {
   const { data: driverData } = useQuery(GET_DRIVERS);
+  const drivers: Driver[] = driverData?.drivers ?? [];
 
-  const [driver1, setDriver1] = useState<Driver | null>();
-  const [driver2, setDriver2] = useState<Driver | null>();
+  const [driver1, setDriver1] = useState<Maybe<Driver>>();
+  const [driver2, setDriver2] = useState<Maybe<Driver>>();
 
   const {
     data: degreesData,
@@ -45,21 +65,20 @@ const App = () => {
       driver1: driver1?.id ?? "",
       driver2: driver2?.id ?? "",
     },
+    skip: !driver1 || !driver2,
   });
 
-  const result = degreesData?.degreesOfSeparation
-    ?.map((d) => `${d.firstName} ${d.lastName}`)
-    ?.join(" -> ");
-
-  console.log(loading + " " + JSON.stringify(degreesData));
-  console.log(error);
-
-  // console.log("Data: " + JSON.stringify(data))
-  // console.log("Error: " + JSON.stringify(error))
-  // console.log("Loading: " + JSON.stringify(loading))
-  // console.log("DataState: " + JSON.stringify(dataState))
-
-  const drivers: Driver[] = driverData?.drivers ?? [];
+  const pairings: Pairing[] = degreesData?.degreesOfSeparation;
+  const result =
+    error?.message ||
+    pairings
+      ?.map(
+        (p) =>
+          `${p.driver1.name} was teammates with ${
+            p.driver2.name
+          } ${formatDateRange(p.dates)}`
+      )
+      ?.join(" \n\n ");
 
   // TODO: Why is the theme still light?
   // const { mode, systemMode } = useColorScheme();
@@ -71,22 +90,29 @@ const App = () => {
       <Card>
         How many degrees of separation are between
         <Autocomplete
-          onChange={(_, value) => setDriver1(value)}
+          onChange={(_, value) => setDriver1(value ?? undefined)}
           options={drivers}
           placeholder="Max Verstappen"
-          getOptionLabel={(option) => option.firstName + " " + option.lastName}
+          getOptionLabel={(option) => option.name}
         />
         and
         <Autocomplete
           onChange={(_, value) => setDriver2(value)}
           options={drivers}
           placeholder="..."
-          getOptionLabel={(option) => option.firstName + " " + option.lastName}
+          getOptionLabel={(option) => option.name}
         />
         {result}
       </Card>
     </>
   );
+};
+
+const formatDateRange = (dates: DateRange[]) => {
+  if (dates.length === 1 && dates[0].start == dates[0].end) {
+    return `for ${dates[0].start}`;
+  }
+  return `from ${dates.map((d) => `${d.start}-${d.end}`).join(",")}`;
 };
 
 export default App;

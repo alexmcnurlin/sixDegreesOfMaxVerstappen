@@ -1,9 +1,14 @@
 import { ApolloServer } from '@apollo/server';
 import { startStandaloneServer } from '@apollo/server/standalone';
-import { drivers } from './drivers.js';
 import { typeDefs } from './schema.js';
+import { ConnectionsService } from './connectionsService.js';
 
-console.log("hello world")
+console.log("Loading driver data...");
+const drivers = ConnectionsService.loadDriverData(null);
+console.log(`-> Loaded ${drivers.length} drivers!`)
+console.log("Loading driver pairings data...")
+const pairings = ConnectionsService.loadDriverPairings(drivers);
+console.log(`-> Loaded ${pairings.length} pairings!`)
 
 const resolvers = {
     Query: {
@@ -13,16 +18,23 @@ const resolvers = {
         degreesOfSeparation(parent, args, contextValue, info) {
             // TODO: Get the real data
             console.log(args)
-            return drivers.filter(d => d.id == args.driver1 || d.id == args.driver2)
-        }
+            return pairings.filter(p => args.driver1 === p.driver1 || args.driver === p.driver2);
+        },
     },
     Driver: {
         teammates(parent) {
             console.log("Sup")
             // TODO: This is NOT efficient. Turn drivers into a dictionary, keyed by ID
-            // return parent.teammates.filter(tm => drivers.find(d => d.id == tm));
-            return undefined;
+            return pairings.filter(p => parent.id === p.driver1);
         },
+    },
+    Pairing: {
+        driver1(parent) {
+            return drivers.find(d => d.id == parent.driver1);
+        },
+        driver2(parent) {
+            return drivers.find(d => d.id == parent.driver2);
+        }
     }
 };
 
