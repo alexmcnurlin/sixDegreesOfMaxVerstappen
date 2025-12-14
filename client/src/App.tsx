@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import "./App.css";
-import { Autocomplete, Card, useColorScheme } from "@mui/joy";
+import { Autocomplete, Card, Typography, useColorScheme } from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
 
 const GET_DRIVERS = gql`
@@ -50,11 +50,24 @@ type DateRange = {
 };
 
 const App = () => {
-  const { data: driverData } = useQuery(GET_DRIVERS);
+  const { data: driverData, error: e1 } = useQuery(GET_DRIVERS);
   const drivers: Driver[] = driverData?.drivers ?? [];
+
+  const max = drivers.find((d) => d.name === "Max Verstappen");
+
+  console.log("driverData: " + JSON.stringify(driverData));
+  console.log("error: " + JSON.stringify(e1));
 
   const [driver1, setDriver1] = useState<Maybe<Driver>>();
   const [driver2, setDriver2] = useState<Maybe<Driver>>();
+
+  useEffect(() => {
+    console.log("We are checking...");
+    if (!driver1 && drivers) {
+      console.log("Setting!");
+      setDriver1(max);
+    }
+  }, [drivers, driver1]);
 
   const {
     data: degreesData,
@@ -87,22 +100,47 @@ const App = () => {
 
   return (
     <>
+      <span id="description">
+        <Typography>
+          You may be familiar with the
+          <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
+            Six Degrees of Kevin Bacon
+          </a>
+          - Most actors can be connected to Kevin Bacon by less than six steps.
+          I.e. they were in a movie with someone who was in a movie with Kevin
+          Bacon.
+        </Typography>
+        <Typography>
+          Lets apply that idea to Formula 1 drivers! Drivers are connected if
+          they were teammates at any point (even one race). Max was teammates
+          with Carlos Sainz Jr. (Toro Rosso, 2015), who was teammates with Lando
+          Norris (McLaren, 2019). This means that Lando has 2 degrees of
+          separation from Max!
+        </Typography>
+      </span>
+
       <Card>
         How many degrees of separation are between
         <Autocomplete
-          onChange={(_, value) => setDriver1(value ?? undefined)}
+          id="driver1"
+          placeholder="Select a driver..."
+          onChange={(_, value) => setDriver1(value)}
           options={drivers}
-          placeholder="Max Verstappen"
+          autoSelect
+          autoHighlight
           getOptionLabel={(option) => option.name}
         />
         and
         <Autocomplete
+          id="driver2"
+          placeholder="Select a driver..."
           onChange={(_, value) => setDriver2(value)}
           options={drivers}
-          placeholder="..."
+          autoSelect
+          autoHighlight
           getOptionLabel={(option) => option.name}
         />
-        {result}
+        <span id="degreesOfSeparation">{result}</span>
       </Card>
     </>
   );
