@@ -119,7 +119,7 @@ const App = () => {
         How many degrees of separation are between
         <Autocomplete
           id="driver1"
-          placeholder="Select a driver..."
+          placeholder="Max Verstappen"
           onChange={(_, value) => setDriver1(value)}
           options={drivers}
           autoSelect
