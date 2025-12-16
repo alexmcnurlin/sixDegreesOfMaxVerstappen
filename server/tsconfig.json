@@ -14,6 +14,9 @@
         "types": [
             "node",
             "jest"
-        ]
-    }
+        ],
+    },
+    // Don't copy over test files. If you do, Jest will try to run tests twice
+    // (and complain that it's not TypeScript)
+    "exclude": ["**/*.test.ts", "**/*.spec.ts", "tests", "__tests__"]
 }
