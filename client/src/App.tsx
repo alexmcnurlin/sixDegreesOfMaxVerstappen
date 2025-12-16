@@ -69,11 +69,7 @@ const App = () => {
     }
   }, [drivers, driver1]);
 
-  const {
-    data: degreesData,
-    loading,
-    error,
-  } = useQuery(GET_DEGREES, {
+  const { data: degreesData, error } = useQuery(GET_DEGREES, {
     variables: {
       driver1: driver1?.id ?? "",
       driver2: driver2?.id ?? "",
