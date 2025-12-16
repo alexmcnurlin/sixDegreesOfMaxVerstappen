@@ -1,6 +1,7 @@
 node_modules/
 
 # Compiled javascript
+lib/
 dist/
 
 # Auto-generated file in MacOS
