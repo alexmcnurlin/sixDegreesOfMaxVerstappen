@@ -10,17 +10,18 @@ console.log("Loading driver pairings data...");
 const pairings = ConnectionsService.loadDriverPairings(drivers);
 console.log(`-> Loaded ${pairings.length} pairings!`);
 
+const getPath = ConnectionsService.buildDegreesOfSeparationMap(
+  drivers,
+  pairings
+);
+
 const resolvers = {
   Query: {
     drivers() {
       return drivers;
     },
     degreesOfSeparation(parent, args, contextValue, info) {
-      // TODO: Get the real data
-      console.log(args);
-      return pairings.filter(
-        (p) => args.driver1 === p.driver1 || args.driver === p.driver2
-      );
+      return getPath(args.driver1, args.driver2);
     },
   },
   Driver: {

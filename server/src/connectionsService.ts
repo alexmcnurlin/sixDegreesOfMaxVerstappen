@@ -66,7 +66,6 @@ export class ConnectionsService {
     pairings.forEach((p) => {
       const u = indexMap[p.driver1];
       const v = indexMap[p.driver2];
-      console.log(`${u}, ${v}`);
       degrees[u][v] = 1;
       pathMap[u][v] = p;
     });
