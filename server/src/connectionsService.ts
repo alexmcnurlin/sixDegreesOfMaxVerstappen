@@ -1,4 +1,5 @@
 import { drivers } from "./drivers";
+import fs from "fs";
 
 // TODO: Should we move these types to their own folder?
 type Driver = (typeof drivers)[0];
@@ -21,8 +22,8 @@ export class ConnectionsService {
    * we're storing the data in an object. If we need anything more complex, we
    * should use a proper database.
    */
-  static loadDriverData(data: any) {
-    return drivers;
+  static loadDriverData(path: string) {
+    return JSON.parse(fs.readFileSync(path, "utf8"));
   }
 
   /**
@@ -104,6 +105,25 @@ export class ConnectionsService {
       }
       return path;
     };
+
+    const flatMap = degrees.flatMap((d) => d);
+    console.log(
+      `Largest Separation: ${flatMap
+        .filter((d) => d != Infinity)
+        .reduce((prev, curr) => Math.max(prev, curr))}`
+    );
+    console.log(
+      `Average: ${
+        flatMap
+          .filter((d) => d != Infinity)
+          .reduce(
+            (previousValue, currentValue) => previousValue + currentValue
+          ) / flatMap.length
+      }`
+    );
+    console.log(
+      `Number of broken links: ${flatMap.filter((d) => d == 0).length}`
+    );
 
     return getPath;
   }

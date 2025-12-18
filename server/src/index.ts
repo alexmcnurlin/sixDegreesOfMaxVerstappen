@@ -4,16 +4,19 @@ import { typeDefs } from "./schema.js";
 import { ConnectionsService } from "./connectionsService";
 
 console.log("Loading driver data...");
-const drivers = ConnectionsService.loadDriverData(null);
+const drivers = ConnectionsService.loadDriverData("./drivers.json");
 console.log(`-> Loaded ${drivers.length} drivers!`);
 console.log("Loading driver pairings data...");
 const pairings = ConnectionsService.loadDriverPairings(drivers);
 console.log(`-> Loaded ${pairings.length} pairings!`);
 
+console.log("Building Degrees of Separation Map");
+console.time("-> Build Degrees of Separation Map in");
 const getPath = ConnectionsService.buildDegreesOfSeparationMap(
   drivers,
   pairings
 );
+console.timeEnd("-> Build Degrees of Separation Map in");
 
 const resolvers = {
   Query: {
@@ -26,7 +29,6 @@ const resolvers = {
   },
   Driver: {
     teammates(parent) {
-      console.log("Sup");
       // TODO: This is NOT efficient. Turn drivers into a dictionary, keyed by ID
       return pairings.filter((p) => parent.id === p.driver1);
     },

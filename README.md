@@ -17,21 +17,22 @@ Note: Development was done in MacOS, but _should_ work in a Windows/Linux develo
 Project structure
 
 - `/client` - The UI, using React with Apollo GraphQL Client
-  - `npm run dev`
+  - `npm start`
 - `/server` - The back end, using Typescript with Apollo GraphQL Server
-  - `npm run start`
+  - `npm start`
+- `/data` - The source data used to generate [drivers.json](server/drivers.json) in the server.
 
-Environmet setup - Ensure `npm` is installed with your package manager of choice - `winget install npm` # TODO: Verify this is right - `brew install npm` - `apt install npm` # TODO: Verify this is right
+Environmet setup - Ensure `npm` is installed with your package manager of choice
+
+- `winget install npm` # TODO: Verify this is right
+- `brew install npm`
+- `apt install npm` # TODO: Verify this is right
 
 ## TODO
 
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
-- Set up dotnet app
-- Set up graphql server
-- Find full dump of driver data
 - Add `appsettings.json` to configure launch parameters
 - Build workflow for launching/testing app
-- Load [driver data](server/src/drivers.ts) to json file
 - Convert driver data to a proper database
 - Convert [schema](server/src/schema.ts) to .graphql file

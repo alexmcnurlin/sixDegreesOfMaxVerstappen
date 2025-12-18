@@ -55,16 +55,11 @@ const App = () => {
 
   const max = drivers.find((d) => d.name === "Max Verstappen");
 
-  console.log("driverData: " + JSON.stringify(driverData));
-  console.log("error: " + JSON.stringify(e1));
-
   const [driver1, setDriver1] = useState<Maybe<Driver>>();
   const [driver2, setDriver2] = useState<Maybe<Driver>>();
 
   useEffect(() => {
-    console.log("We are checking...");
     if (!driver1 && drivers) {
-      console.log("Setting!");
       setDriver1(max);
     }
   }, [drivers, driver1]);
@@ -80,14 +75,12 @@ const App = () => {
   const pairings: Pairing[] = degreesData?.degreesOfSeparation;
   const result =
     error?.message ||
-    pairings
-      ?.map(
-        (p) =>
-          `${p.driver1.name} was teammates with ${
-            p.driver2.name
-          } ${formatDateRange(p.dates)}`
-      )
-      ?.join(" \n\n ");
+    pairings?.map((p) => (
+      <div>
+        {p.driver1.name} was teammates with {p.driver2.name}{" "}
+        {formatDateRange(p.dates)}
+      </div>
+    ));
 
   // TODO: Why is the theme still light?
   // const { mode, systemMode } = useColorScheme();
@@ -98,7 +91,7 @@ const App = () => {
     <>
       <span id="description">
         <Typography>
-          You may be familiar with the
+          {"You may be familiar with the "}
           <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
             Six Degrees of Kevin Bacon
           </a>
@@ -106,6 +99,7 @@ const App = () => {
           I.e. they were in a movie with someone who was in a movie with Kevin
           Bacon.
         </Typography>
+        <br />
         <Typography>
           Lets apply that idea to Formula 1 drivers! Drivers are connected if
           they were teammates at any point (even one race). Max was teammates
@@ -115,6 +109,7 @@ const App = () => {
         </Typography>
       </span>
 
+      <br />
       <Card>
         How many degrees of separation are between
         <Autocomplete
@@ -136,13 +131,26 @@ const App = () => {
           autoHighlight
           getOptionLabel={(option) => option.name}
         />
-        <span id="degreesOfSeparation">{result}</span>
+        {result?.length && (
+          <>
+            <div>
+              {result.length} degrees of separation between {driver1?.name} and{" "}
+              {driver2?.name}
+            </div>
+            <span id="degreesOfSeparation">{result}</span>
+          </>
+        )}
       </Card>
     </>
   );
 };
 
 const formatDateRange = (dates: DateRange[]) => {
+  // This lets the UI look good before we populate the date data
+  // TODO: Remove this
+  if (dates.length == 0) {
+    return "at some point";
+  }
   if (dates.length === 1 && dates[0].start == dates[0].end) {
     return `for ${dates[0].start}`;
   }
