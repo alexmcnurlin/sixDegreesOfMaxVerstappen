@@ -2,18 +2,25 @@ export const typeDefs = `#graphql
   type Driver {
     id: String!
     name: String!
-    teammates: [Pairing!]!
+    teammates: [Teammate!]!
+  }
+
+  type Teammate {
+    id: Driver!
+    dates: [GrandPrixRange!]!
   }
 
   type Pairing {
     driver1: Driver!
     driver2: Driver!
-    dates: [DateRange!]!
+    dates: [GrandPrixRange!]!
   }
 
-  type DateRange {
-    start: String!
-    end: String!
+  type GrandPrixRange {
+    startName: String
+    startDate: String
+    endName: String
+    endDate: String
   }
 
   type Query {

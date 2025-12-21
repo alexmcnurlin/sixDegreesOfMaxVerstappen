@@ -24,8 +24,10 @@ const GET_DEGREES = gql`
         name
       }
       dates {
-        start
-        end
+        startName
+        startDate
+        endName
+        endDate
       }
     }
   }
@@ -41,16 +43,18 @@ type Driver = {
 type Pairing = {
   driver1: Driver;
   driver2: Driver;
-  dates: DateRange[];
+  dates: GrandPrixRange[];
 };
 
-type DateRange = {
-  start: number;
-  end: number;
+type GrandPrixRange = {
+  startName: number;
+  startDate: number;
+  endName: number;
+  endDate: number;
 };
 
 const App = () => {
-  const { data: driverData, error: e1 } = useQuery(GET_DRIVERS);
+  const { data: driverData } = useQuery(GET_DRIVERS);
   const drivers: Driver[] = driverData?.drivers ?? [];
 
   const max = drivers.find((d) => d.name === "Max Verstappen");
@@ -145,16 +149,16 @@ const App = () => {
   );
 };
 
-const formatDateRange = (dates: DateRange[]) => {
+const formatDateRange = (dates: GrandPrixRange[]) => {
   // This lets the UI look good before we populate the date data
   // TODO: Remove this
   if (dates.length == 0) {
     return "at some point";
   }
-  if (dates.length === 1 && dates[0].start == dates[0].end) {
-    return `for ${dates[0].start}`;
+  if (dates.length === 1 && dates[0].startDate == dates[0].endDate) {
+    return `for ${dates[0].startDate}`;
   }
-  return `from ${dates.map((d) => `${d.start}-${d.end}`).join(",")}`;
+  return `from ${dates.map((d) => `${d.startDate}-${d.endDate}`).join(",")}`;
 };
 
 export default App;

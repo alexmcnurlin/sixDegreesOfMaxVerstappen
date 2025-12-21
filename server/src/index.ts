@@ -24,14 +24,16 @@ const resolvers = {
       return drivers;
     },
     degreesOfSeparation(parent, args, contextValue, info) {
-      return getPath(args.driver1, args.driver2);
+      const retval = getPath(args.driver1, args.driver2);
+      console.log(JSON.stringify(retval));
+      return retval;
     },
   },
   Driver: {
-    teammates(parent) {
-      // TODO: This is NOT efficient. Turn drivers into a dictionary, keyed by ID
-      return pairings.filter((p) => parent.id === p.driver1);
-    },
+    // teammates(parent) {
+    //   // TODO: This is NOT efficient. Turn drivers into a dictionary, keyed by ID
+    //   return pairings.filter((p) => parent.id === p.driver1);
+    // },
   },
   Pairing: {
     driver1(parent) {
