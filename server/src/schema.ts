@@ -17,9 +17,9 @@ export const typeDefs = `#graphql
   }
 
   type GrandPrixRange {
-    startName: String
+    startRace: String
     startDate: String
-    endName: String
+    endRace: String
     endDate: String
   }
 

@@ -25,7 +25,6 @@ const resolvers = {
     },
     degreesOfSeparation(parent, args, contextValue, info) {
       const retval = getPath(args.driver1, args.driver2);
-      console.log(JSON.stringify(retval));
       return retval;
     },
   },
@@ -41,6 +40,9 @@ const resolvers = {
     },
     driver2(parent) {
       return drivers.find((d) => d.id == parent.driver2);
+    },
+    dates(parent) {
+      return parent.dates;
     },
   },
 };

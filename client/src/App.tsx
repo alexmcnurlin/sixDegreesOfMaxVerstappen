@@ -2,8 +2,16 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import "./App.css";
-import { Autocomplete, Card, Typography, useColorScheme } from "@mui/joy";
+import {
+  Autocomplete,
+  Card,
+  CircularProgress,
+  Typography,
+  useColorScheme,
+} from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
+import type { Driver, GrandPrixRange, Pairing } from "./Types";
+import DegreesOfSeparation from "./DegreesOfSeparation";
 
 const GET_DRIVERS = gql`
   query GetDrivers {
@@ -24,37 +32,17 @@ const GET_DEGREES = gql`
         name
       }
       dates {
-        startName
         startDate
-        endName
+        startRace
         endDate
+        endRace
       }
     }
   }
 `;
 
-// We don't have any codegen set up to provide the types for our queries, so
-// lets manually recreate them here.
-type Driver = {
-  id: string;
-  name: string;
-};
-
-type Pairing = {
-  driver1: Driver;
-  driver2: Driver;
-  dates: GrandPrixRange[];
-};
-
-type GrandPrixRange = {
-  startName: number;
-  startDate: number;
-  endName: number;
-  endDate: number;
-};
-
 const App = () => {
-  const { data: driverData } = useQuery(GET_DRIVERS);
+  const { data: driverData, loading: loadingDrivers } = useQuery(GET_DRIVERS);
   const drivers: Driver[] = driverData?.drivers ?? [];
 
   const max = drivers.find((d) => d.name === "Max Verstappen");
@@ -68,7 +56,11 @@ const App = () => {
     }
   }, [drivers, driver1]);
 
-  const { data: degreesData, error } = useQuery(GET_DEGREES, {
+  const {
+    data: degreesData,
+    error,
+    loading: loadingDegrees,
+  } = useQuery(GET_DEGREES, {
     variables: {
       driver1: driver1?.id ?? "",
       driver2: driver2?.id ?? "",
@@ -91,7 +83,11 @@ const App = () => {
   // console.log(mode); // "system"
   // console.log(systemMode); // "light" |
 
-  return (
+  console.log(JSON.stringify(pairings));
+
+  return loadingDrivers ? (
+    <CircularProgress />
+  ) : (
     <>
       <span id="description">
         <Typography>
@@ -135,14 +131,12 @@ const App = () => {
           autoHighlight
           getOptionLabel={(option) => option.name}
         />
-        {result?.length && (
-          <>
-            <div>
-              {result.length} degrees of separation between {driver1?.name} and{" "}
-              {driver2?.name}
-            </div>
-            <span id="degreesOfSeparation">{result}</span>
-          </>
+        {loadingDegrees ? (
+          <CircularProgress />
+        ) : pairings?.length ? (
+          <DegreesOfSeparation pairings={pairings} />
+        ) : (
+          <></>
         )}
       </Card>
     </>
