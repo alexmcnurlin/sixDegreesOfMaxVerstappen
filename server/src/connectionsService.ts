@@ -54,14 +54,11 @@ export class ConnectionsService {
         // into a single Pairing I.e. Daniel Ricciardo was teammates with Yuki
         // Tsunoda for a few races in 2023, then again in 2024
         ConnectionsService.groupBy(d.teammates, (tm) => tm.id)
-      ).map((value) => {
-        console.log(JSON.stringify(value[1]));
-        return {
-          driver1: d.id,
-          driver2: value[0],
-          dates: value[1].map((tm) => tm as GrandPrixRange),
-        };
-      })
+      ).map((value) => ({
+        driver1: d.id,
+        driver2: value[0],
+        dates: value[1].map((tm) => tm as GrandPrixRange),
+      }))
     );
   }
 

@@ -33,6 +33,13 @@ Environmet setup - Ensure `npm` is installed with your package manager of choice
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
 - Add `appsettings.json` to configure launch parameters
-- Build workflow for launching/testing app
-- Convert driver data to a proper database
+- Add scripts to run full app, and run all tests
 - Convert [schema](server/src/schema.ts) to .graphql file
+- Codegen gql queries
+- Add playwright tests for DegreesOfSeparation
+- Add 2025 drivers
+- Add the total race count to the driver pairings
+- Figure out why dark mode isn't working
+- Change description paragraph in App.tsx
+- Check for outstanding TODOs
+- Deploy to production

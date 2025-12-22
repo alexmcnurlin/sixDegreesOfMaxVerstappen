@@ -29,21 +29,17 @@ const DegreesOfSeparation = ({ pairings }: DegreesOfSeparationProps) => {
           </AccordionSummary>
         </Accordion>
         {pairings.map((p, i) => (
-          <Accordion key={`${p.driver2.id}-accordion`}>
+          <Accordion key={i}>
             <AccordionSummary key={`${p.driver2.id}-accordion-summary`}>
               {`${i + 1}) ${p.driver2.name}`}
             </AccordionSummary>
             <AccordionDetails key={`${p.driver2.id}-accordion-details`}>
-              {`${p.driver1.name} was teammates with ${p.driver2.name}`}
-              <List>
-                {p.dates.map((d) => (
-                  <ListItem key={`${d.startRace}-${d.endRace}`}>{`${getYear(
-                    d.startDate
-                  )} ${d.startRace} (${d.startDate}) -> ${getYear(d.endDate)} ${
-                    d.endRace
-                  } (${d.endDate})`}</ListItem>
-                ))}
-              </List>
+              {`${p.driver1.name} was teammates with ${p.driver2.name} from the `}
+              <b>{`${getYear(p.dates[0].startDate)} ${
+                p.dates[0].startRace
+              }`}</b>
+              {` to the `}
+              <b>{`${getYear(p.dates[0].endDate)} ${p.dates[0].endRace}`}</b>
             </AccordionDetails>
           </Accordion>
         ))}

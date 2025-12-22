@@ -2,15 +2,9 @@ import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
 import { useEffect, useState } from "react";
 import "./App.css";
-import {
-  Autocomplete,
-  Card,
-  CircularProgress,
-  Typography,
-  useColorScheme,
-} from "@mui/joy";
+import { Autocomplete, Card, CircularProgress, Typography } from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
-import type { Driver, GrandPrixRange, Pairing } from "./Types";
+import type { Driver, Pairing } from "./Types";
 import DegreesOfSeparation from "./DegreesOfSeparation";
 
 const GET_DRIVERS = gql`
@@ -69,15 +63,6 @@ const App = () => {
   });
 
   const pairings: Pairing[] = degreesData?.degreesOfSeparation;
-  const result =
-    error?.message ||
-    pairings?.map((p) => (
-      <div>
-        {p.driver1.name} was teammates with {p.driver2.name}{" "}
-        {formatDateRange(p.dates)}
-      </div>
-    ));
-
   // TODO: Why is the theme still light?
   // const { mode, systemMode } = useColorScheme();
   // console.log(mode); // "system"
@@ -136,23 +121,11 @@ const App = () => {
         ) : pairings?.length ? (
           <DegreesOfSeparation pairings={pairings} />
         ) : (
-          <></>
+          ""
         )}
       </Card>
     </>
   );
-};
-
-const formatDateRange = (dates: GrandPrixRange[]) => {
-  // This lets the UI look good before we populate the date data
-  // TODO: Remove this
-  if (dates.length == 0) {
-    return "at some point";
-  }
-  if (dates.length === 1 && dates[0].startDate == dates[0].endDate) {
-    return `for ${dates[0].startDate}`;
-  }
-  return `from ${dates.map((d) => `${d.startDate}-${d.endDate}`).join(",")}`;
 };
 
 export default App;
