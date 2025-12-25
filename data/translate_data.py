@@ -1,7 +1,7 @@
 import argparse
 import json
-from collections import defaultdict
-from itertools import product
+from collections import defaultdict, OrderedDict
+from itertools import groupby, product
 from pathlib import Path
 
 import pandas as pd
@@ -16,38 +16,30 @@ def add_manual_pairings(drivers):
 
     # Updates from the 2025 season
     new_pairings = [
-        ("Isack Hadjar", "Yuki Tsunoda"), # Australia
-        ("Isack Hadjar", "Liam Lawson"), # Japan
-        ("Max Verstappen", "Yuki Tsunoda"), # Japan
-        ("Max Verstappen", "Liam Lawson"), # Australia
-        ("Kimi Antonelli", "George Russell"), # Australia
-        ("Jack Doohan", "Pierre Gasly"), # Australia
-        ("Franco Colapinto", "Pierre Gasly"), # Imola
-        ("Gabriel Bortaletto", "Nico H\u00fclkenberg"), # Australia
-        ("Lewis Hamilton", "Charles Leclerc"), # Australia
-        ("Oliver Bearman", "Esteban Ocon"), # Australia
-        ("Alexander Albon", "Carlos Sainz") # Australia
+        ("Isack Hadjar", "Yuki Tsunoda"),  # Australia
+        ("Isack Hadjar", "Liam Lawson"),  # Japan
+        ("Max Verstappen", "Yuki Tsunoda"),  # Japan
+        ("Max Verstappen", "Liam Lawson"),  # Australia
+        ("Kimi Antonelli", "George Russell"),  # Australia
+        ("Jack Doohan", "Pierre Gasly"),  # Australia
+        ("Franco Colapinto", "Pierre Gasly"),  # Imola
+        ("Gabriel Bortaletto", "Nico H\u00fclkenberg"),  # Australia
+        ("Lewis Hamilton", "Charles Leclerc"),  # Australia
+        ("Oliver Bearman", "Esteban Ocon"),  # Australia
+        ("Alexander Albon", "Carlos Sainz"),  # Australia
     ]
 
     for driver1, driver2 in new_pairings:
         try:
             d1 = next(d for d in drivers.values() if d["name"] == driver1)
         except StopIteration:
-            d1 = {
-                "id": str(next_id),
-                "name": driver1,
-                "teammates": dict()
-            }
+            d1 = {"id": str(next_id), "name": driver1, "teammates": dict()}
             drivers[str(next_id)] = d1
             next_id += 1
         try:
             d2 = next(d for d in drivers.values() if d["name"] == driver2)
         except StopIteration:
-            d2 = {
-                "id": str(next_id),
-                "name": driver2,
-                "teammates": dict()
-            }
+            d2 = {"id": str(next_id), "name": driver2, "teammates": dict()}
             drivers[str(next_id)] = d2
             next_id += 1
 
@@ -59,13 +51,10 @@ def add_manual_pairings(drivers):
 
 def add_dank_drivers(drivers):
     """Add a couple drivers for the memes :)"""
+
     def add_alias(name, alias, id):
         original = next(d for d in drivers if d["name"] == name)
-        aliased = {
-            "id": id,
-            "name": alias,
-            "teammates": list(original["teammates"])
-        }
+        aliased = {"id": id, "name": alias, "teammates": list(original["teammates"])}
         for teammate in aliased["teammates"]:
             for driver in drivers:
                 if driver["id"] == teammate:
@@ -99,33 +88,72 @@ def register_pairing(d1, d2):
         last_teammate["endDate"] = date
     else:
         # If they weren't teammates, add this to the list
-        d1_teammates.append({
-            "id": d2_id,
-            "startRace": race,
-            "startDate": date,
-            "endRace": race,
-            "endDate": date,
-        })
+        d1_teammates.append(
+            {
+                "id": d2_id,
+                "startRace": race,
+                "startDate": date,
+                "endRace": race,
+                "endDate": date,
+            }
+        )
+
+
+def collapse_teammates(driver):
+    """
+    If a driver was teammates with another driver multiple times, collapse that
+    into one object
+    """
+    # Group entries by teammate ID, preserving the order that they show up
+    teammates = OrderedDict()
+    for tm in driver["teammates"]:
+        key = tm["id"]
+        if key not in teammates:
+            teammates[key] = []
+        teammates[key].append(tm)
+
+    return {
+        "id": driver["id"],
+        "name": driver["name"],
+        "teammates": [
+            {
+                "id": tm_id,
+                "dates": [
+                    {
+                        "startDate": tm["startDate"],
+                        "startRace": tm["startRace"],
+                        "endDate": tm["endDate"],
+                        "endRace": tm["endRace"],
+                    }
+                    for tm in tms
+                ],
+            }
+            for tm_id, tms in teammates.items()
+        ],
+    }
 
 
 if __name__ == "__main__":
-    parser = argparse.ArgumentParser(description="Translates CSV driver data into a structured JSON.")
+
+    parser = argparse.ArgumentParser(
+        description="Translates CSV driver data into a structured JSON."
+    )
     parser.add_argument("output", type=Path, help="The output file to generate.")
     parser.add_argument("--input", "-i", type=Path, help="The folder with all CSV data")
     args = parser.parse_args()
 
-    drivers = pd.read_csv(args.input/"drivers.csv")
+    drivers = pd.read_csv(args.input / "drivers.csv")
     print(f"Loaded {len(drivers)} drivers")
-    races = pd.read_csv(args.input/"races.csv")
-    race_results = pd.read_csv(args.input/"results.csv")
-    status = pd.read_csv(args.input/"status.csv")
+    races = pd.read_csv(args.input / "races.csv")
+    race_results = pd.read_csv(args.input / "results.csv")
+    status = pd.read_csv(args.input / "status.csv")
 
     with_drivers = pd.merge(race_results, drivers, how="left", on="driverId")
     with_races = pd.merge(with_drivers, races, how="left", on="raceId")
     with_races.sort_values("date")
 
     pairings = with_races.groupby(["raceId", "constructorId"])
-    results = defaultdict(lambda: { "teammates": []})
+    results = defaultdict(lambda: {"teammates": []})
 
     def build_driver_data(series):
         if len(series) == 1:
@@ -144,7 +172,7 @@ if __name__ == "__main__":
     # results = add_manual_pairings(results)
 
     # The defaultDict leaves an empty entry in the final collection. Remove it
-    drivers_list = [d for d in results.values() if "id" in d]
+    drivers_list = [collapse_teammates(d) for d in results.values() if "id" in d]
     # drivers_list = add_dank_drivers(drivers_list)
 
     # TODO: We lose 6 drivers somewhere :( Why?

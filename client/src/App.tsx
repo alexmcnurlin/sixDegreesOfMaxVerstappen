@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import "./App.css";
 import { Autocomplete, Card, CircularProgress, Typography } from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
-import type { Driver, Pairing } from "./Types";
+import type { Driver, Pairing } from "./types";
 import DegreesOfSeparation from "./DegreesOfSeparation";
 
 const GET_DRIVERS = gql`
@@ -21,6 +21,11 @@ const GET_DEGREES = gql`
     degreesOfSeparation(driver1: $driver1, driver2: $driver2) {
       driver1 {
         name
+        teammates {
+          driver {
+            name
+          }
+        }
       }
       driver2 {
         name
@@ -50,11 +55,7 @@ const App = () => {
     }
   }, [drivers, driver1]);
 
-  const {
-    data: degreesData,
-    error,
-    loading: loadingDegrees,
-  } = useQuery(GET_DEGREES, {
+  const { data: degreesData, loading: loadingDegrees } = useQuery(GET_DEGREES, {
     variables: {
       driver1: driver1?.id ?? "",
       driver2: driver2?.id ?? "",
@@ -67,8 +68,6 @@ const App = () => {
   // const { mode, systemMode } = useColorScheme();
   // console.log(mode); // "system"
   // console.log(systemMode); // "light" |
-
-  console.log(JSON.stringify(pairings));
 
   return loadingDrivers ? (
     <CircularProgress />

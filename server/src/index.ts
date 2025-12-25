@@ -1,59 +1,90 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { typeDefs } from "./schema.js";
 import { ConnectionsService } from "./connectionsService";
+import { loadSchema } from "@graphql-tools/load";
+import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { Driver, Resolvers } from "../gql";
+import { DriverDto, PairingDto } from "./dtoTypes";
+
+export interface MyContext {
+  drivers: Map<string, DriverDto>;
+  pairings: Map<string, PairingDto>;
+  getDriver: (id: string) => Driver;
+  driversList: DriverDto[];
+}
 
 console.log("Loading driver data...");
 const drivers = ConnectionsService.loadDriverData("./drivers.json");
-console.log(`-> Loaded ${drivers.length} drivers!`);
+const driversList = Array.from(drivers.values());
+console.log(`-> Loaded ${drivers.size} drivers!`);
+
 console.log("Loading driver pairings data...");
-const pairings = ConnectionsService.loadDriverPairings(drivers);
-console.log(`-> Loaded ${pairings.length} pairings!`);
+const pairings = ConnectionsService.loadDriverPairings(driversList);
+const pairingsList = Array.from(pairings.values());
+console.log(`-> Loaded ${pairings.size} pairings!`);
 
 console.log("Building Degrees of Separation Map");
 console.time("-> Build Degrees of Separation Map in");
 const getPath = ConnectionsService.buildDegreesOfSeparationMap(
-  drivers,
-  pairings
+  driversList,
+  pairingsList
 );
 console.timeEnd("-> Build Degrees of Separation Map in");
 
-const resolvers = {
+const resolvers: Resolvers<MyContext> = {
   Query: {
-    drivers() {
-      return drivers;
+    drivers(parent, args, contextValue, info) {
+      return contextValue.driversList.map((d) => contextValue.getDriver(d.id));
     },
     degreesOfSeparation(parent, args, contextValue, info) {
       const retval = getPath(args.driver1, args.driver2);
-      return retval;
+      return retval.map((p) => ({
+        driver1: contextValue.getDriver(p.driver1),
+        driver2: contextValue.getDriver(p.driver2),
+        dates: p.dates,
+      }));
     },
   },
   Driver: {
-    // teammates(parent) {
-    //   // TODO: This is NOT efficient. Turn drivers into a dictionary, keyed by ID
-    //   return pairings.filter((p) => parent.id === p.driver1);
-    // },
+    teammates(parent, args, contextValue, info) {
+      const driver = contextValue.drivers.get(parent.id);
+      const pairings = driver.teammates.map((tm) =>
+        contextValue.pairings.get(`${driver.id}+${tm.id}`)
+      );
+      return pairings.map((p) => ({
+        driver: contextValue.getDriver(p.driver2),
+      }));
+    },
   },
-  Pairing: {
-    driver1(parent) {
-      return drivers.find((d) => d.id == parent.driver1);
-    },
-    driver2(parent) {
-      return drivers.find((d) => d.id == parent.driver2);
-    },
-    dates(parent) {
-      return parent.dates;
+  Teammate: {
+    driver(parent, args, contextValue, info) {
+      return parent.driver;
     },
   },
 };
 
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-});
+loadSchema("../shared/schema.graphql", {
+  loaders: [new GraphQLFileLoader()],
+})
+  .then((typeDefs) => {
+    const server = new ApolloServer<MyContext>({
+      typeDefs,
+      resolvers,
+    });
 
-startStandaloneServer(server, {
-  listen: { port: 5172 },
-}).then(({ url }) => {
-  console.log(`🚀  Server reay at: ${url}`);
-});
+    return startStandaloneServer(server, {
+      context: async () => ({
+        drivers: drivers,
+        pairings: pairings,
+        driversList: driversList,
+        getDriver: (id: string) => ({
+          id: id,
+          name: drivers.get(id).name,
+        }),
+      }),
+      listen: { port: 5172 },
+    });
+  })
+  .then(({ url }) => {
+    console.log(`🚀  Server reay at: ${url}`);
+  });

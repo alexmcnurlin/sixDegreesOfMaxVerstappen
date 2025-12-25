@@ -6,3 +6,20 @@ dist/
 
 # Auto-generated file in MacOS
 .DS_STORE
+
+# Playwright
+test-results/
+playwright-report/
+blob-report/
+playwright/.cache/
+playwright/.auth/
+
+# Codegenned fils
+client/src/types.ts
+server/gql.ts
+
+# Python virtual environment
+.venv
+
+# Source data. Not sure if we can commit this
+formula-1-world-championship-1950-2020/

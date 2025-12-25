@@ -1,32 +1,5 @@
 import fs from "fs";
-
-// TODO: Should we move these types to their own folder?
-type Driver = {
-  id: string;
-  name: string;
-  teammates: Teammate[];
-};
-
-type Teammate = {
-  id: string;
-  startDate: number;
-  startRace: number;
-  endDate: number;
-  endRace: number;
-};
-
-type Pairing = {
-  driver1: string;
-  driver2: string;
-  dates: GrandPrixRange[];
-};
-
-type GrandPrixRange = {
-  startDate: number;
-  startRace: number;
-  endDate: number;
-  endRace: number;
-};
+import { DriverDto, PairingDto } from "./dtoTypes";
 
 export class ConnectionsService {
   /**
@@ -36,8 +9,10 @@ export class ConnectionsService {
    * we're storing the data in an object. If we need anything more complex, we
    * should use a proper database.
    */
-  static loadDriverData(path: string) {
-    return JSON.parse(fs.readFileSync(path, "utf8"));
+  static loadDriverData(path: string): Map<string, DriverDto> {
+    return new Map(
+      JSON.parse(fs.readFileSync(path, "utf8")).map((d) => [d.id, d])
+    );
   }
 
   /**
@@ -46,19 +21,18 @@ export class ConnectionsService {
    * Each pairing should show up twice (I.e. Max was teammates with Carlos, AND
    * Carlos was teammates with Max)
    */
-  static loadDriverPairings(data: Driver[]): Pairing[] {
-    return data.flatMap((d) =>
-      // Collapse the Driver.Teammate[] into Pairing[]
-      Object.entries(
-        // Each teammate can show up multiple times. Map those multiple entries
-        // into a single Pairing I.e. Daniel Ricciardo was teammates with Yuki
-        // Tsunoda for a few races in 2023, then again in 2024
-        ConnectionsService.groupBy(d.teammates, (tm) => tm.id)
-      ).map((value) => ({
-        driver1: d.id,
-        driver2: value[0],
-        dates: value[1].map((tm) => tm as GrandPrixRange),
-      }))
+  static loadDriverPairings(data: DriverDto[]): Map<string, PairingDto> {
+    return new Map(
+      data
+        .flatMap((d) =>
+          // Map TeammateDto[] to PairingDto[]
+          d.teammates.map((tm) => ({
+            driver1: d.id,
+            driver2: tm.id,
+            dates: tm.dates,
+          }))
+        )
+        .map((p) => [`${p.driver1}+${p.driver2}`, p])
     );
   }
 
@@ -70,14 +44,17 @@ export class ConnectionsService {
    * reconstruction described here
    * https://en.wikipedia.org/wiki/Floyd%E2%80%93Warshall_algorithm#Path_reconstruction
    */
-  static buildDegreesOfSeparationMap(drivers: Driver[], pairings: Pairing[]) {
+  static buildDegreesOfSeparationMap(
+    drivers: DriverDto[],
+    pairings: PairingDto[]
+  ) {
     const length = drivers.length;
     const indexMap: Record<string, number> = {};
     drivers.forEach(({ id }, i) => (indexMap[id] = i));
     const degrees: number[][] = Array.from({ length: length }, () =>
       Array.from({ length: length }, () => Infinity)
     );
-    const pathMap: Pairing[][] = Array.from({ length: length }, () =>
+    const pathMap: PairingDto[][] = Array.from({ length: length }, () =>
       Array.from({ length: length }, () => null)
     );
 
@@ -114,7 +91,7 @@ export class ConnectionsService {
       if (pathMap[u][v] == null) {
         return null;
       }
-      const path = [];
+      const path: PairingDto[] = [];
       while (u != v) {
         const p = pathMap[u][v];
         path.unshift(p);
@@ -144,15 +121,4 @@ export class ConnectionsService {
 
     return getPath;
   }
-
-  /**
-   * Groups objects by a key. Returns a record of key and all items with that key.
-   *
-   * Taken from StackOverflow https://stackoverflow.com/questions/42136098/array-groupby-in-typescript
-   */
-  static groupBy = <T, K extends keyof any>(arr: T[], key: (i: T) => K) =>
-    arr.reduce((groups, item) => {
-      (groups[key(item)] ||= []).push(item);
-      return groups;
-    }, {} as Record<K, T[]>);
 }
