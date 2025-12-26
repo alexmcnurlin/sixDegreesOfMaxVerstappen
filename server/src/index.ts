@@ -53,12 +53,8 @@ const resolvers: Resolvers<MyContext> = {
       );
       return pairings.map((p) => ({
         driver: contextValue.getDriver(p.driver2),
+        dates: p.dates,
       }));
-    },
-  },
-  Teammate: {
-    driver(parent, args, contextValue, info) {
-      return parent.driver;
     },
   },
 };

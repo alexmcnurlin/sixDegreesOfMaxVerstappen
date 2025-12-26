@@ -1,22 +1,22 @@
-import { gql } from "@apollo/client";
 import { useQuery } from "@apollo/client/react";
-import { useEffect, useState } from "react";
-import "./App.css";
 import { Autocomplete, Card, CircularProgress, Typography } from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
-import type { Driver, Pairing } from "./types";
+import { useEffect, useState } from "react";
+import "./App.css";
 import DegreesOfSeparation from "./DegreesOfSeparation";
+import { graphql } from "./gql/gql";
+import { Driver } from "./gql/graphql";
 
-const GET_DRIVERS = gql`
+const GET_DRIVERS = graphql(`
   query GetDrivers {
     drivers {
       id
       name
     }
   }
-`;
+`);
 
-const GET_DEGREES = gql`
+const GET_DEGREES = graphql(`
   query GetDegreesOfSeparation($driver1: String, $driver2: String) {
     degreesOfSeparation(driver1: $driver1, driver2: $driver2) {
       driver1 {
@@ -38,11 +38,11 @@ const GET_DEGREES = gql`
       }
     }
   }
-`;
+`);
 
 const App = () => {
   const { data: driverData, loading: loadingDrivers } = useQuery(GET_DRIVERS);
-  const drivers: Driver[] = driverData?.drivers ?? [];
+  const drivers = driverData?.drivers ?? [];
 
   const max = drivers.find((d) => d.name === "Max Verstappen");
 
@@ -63,7 +63,7 @@ const App = () => {
     skip: !driver1 || !driver2,
   });
 
-  const pairings: Pairing[] = degreesData?.degreesOfSeparation;
+  const pairings = degreesData?.degreesOfSeparation;
   // TODO: Why is the theme still light?
   // const { mode, systemMode } = useColorScheme();
   // console.log(mode); // "system"

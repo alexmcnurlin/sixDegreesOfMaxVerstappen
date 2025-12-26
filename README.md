@@ -34,7 +34,6 @@ Here's a list of TODO items that I want to complete before I'd consider this pro
 
 - Add `appsettings.json` to configure launch parameters
 - Add scripts to run full app, and run all tests
-- Codegen gql queries
 - Move codegen config/scripts to shared folder
 - Add playwright tests for DegreesOfSeparation
 - Add 2025 drivers

@@ -15,7 +15,7 @@ playwright/.cache/
 playwright/.auth/
 
 # Codegenned fils
-client/src/types.ts
+client/src/gql/
 server/gql.ts
 
 # Python virtual environment
