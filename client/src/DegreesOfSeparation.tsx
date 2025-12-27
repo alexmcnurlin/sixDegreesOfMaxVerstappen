@@ -1,21 +1,19 @@
 import { memo } from "react";
-import type { Pairing } from "./Types";
 import {
   Accordion,
   AccordionDetails,
   AccordionGroup,
   AccordionSummary,
-  List,
-  ListItem,
 } from "@mui/joy";
+import { Maybe, GetDegreesOfSeparationQuery } from "./gql/graphql";
+
+type Pairing = GetDegreesOfSeparationQuery["degreesOfSeparation"][0];
 
 interface DegreesOfSeparationProps {
   pairings: Pairing[];
 }
 
 const DegreesOfSeparation = ({ pairings }: DegreesOfSeparationProps) => {
-  console.log(JSON.stringify(pairings));
-
   return (
     <>
       {`${pairings.length} degrees of separation:`}
@@ -35,11 +33,13 @@ const DegreesOfSeparation = ({ pairings }: DegreesOfSeparationProps) => {
             </AccordionSummary>
             <AccordionDetails key={`${p.driver2.id}-accordion-details`}>
               {`${p.driver1.name} was teammates with ${p.driver2.name} from the `}
-              <b>{`${getYear(p.dates[0].startDate)} ${
-                p.dates[0].startRace
+              <b>{`${getYear(p?.dates?.[0]?.startDate ?? "")} ${
+                p?.dates?.[0].startRace
               }`}</b>
               {` to the `}
-              <b>{`${getYear(p.dates[0].endDate)} ${p.dates[0].endRace}`}</b>
+              <b>{`${getYear(p?.dates?.[0]?.endDate)} ${
+                p?.dates?.[0].endRace
+              }`}</b>
             </AccordionDetails>
           </Accordion>
         ))}
@@ -48,6 +48,7 @@ const DegreesOfSeparation = ({ pairings }: DegreesOfSeparationProps) => {
   );
 };
 
-const getYear = (endDate: string) => endDate.split("-")[0];
+const getYear = (endDate: Maybe<string> | undefined) =>
+  (endDate ?? "").split("-")[0];
 
 export default memo(DegreesOfSeparation);

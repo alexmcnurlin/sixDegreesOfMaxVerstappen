@@ -1,10 +1,12 @@
 import { ApolloServer } from "@apollo/server";
 import { startStandaloneServer } from "@apollo/server/standalone";
-import { ConnectionsService } from "./connectionsService";
-import { loadSchema } from "@graphql-tools/load";
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
+import { loadSchema } from "@graphql-tools/load";
 import { Driver, Resolvers } from "../gql";
+import { ConnectionsService } from "./connectionsService";
 import { DriverDto, PairingDto } from "./dtoTypes";
+import config from "../config.json";
+import drivers from "../drivers.json";
 
 export interface MyContext {
   drivers: Map<string, DriverDto>;
@@ -14,9 +16,9 @@ export interface MyContext {
 }
 
 console.log("Loading driver data...");
-const drivers = ConnectionsService.loadDriverData("./drivers.json");
-const driversList = Array.from(drivers.values());
-console.log(`-> Loaded ${drivers.size} drivers!`);
+const driversMap = ConnectionsService.loadDriverData(drivers as DriverDto[]);
+const driversList = Array.from(driversMap.values());
+console.log(`-> Loaded ${driversMap.size} drivers!`);
 
 console.log("Loading driver pairings data...");
 const pairings = ConnectionsService.loadDriverPairings(driversList);
@@ -70,17 +72,17 @@ loadSchema("../shared/schema.graphql", {
 
     return startStandaloneServer(server, {
       context: async () => ({
-        drivers: drivers,
+        drivers: driversMap,
         pairings: pairings,
         driversList: driversList,
         getDriver: (id: string) => ({
           id: id,
-          name: drivers.get(id).name,
+          name: driversMap.get(id).name,
         }),
       }),
-      listen: { port: 5172 },
+      listen: { port: config["serverPort"] },
     });
   })
   .then(({ url }) => {
-    console.log(`🚀  Server reay at: ${url}`);
+    console.log(`🚀  Server ready at: ${url}`);
   });

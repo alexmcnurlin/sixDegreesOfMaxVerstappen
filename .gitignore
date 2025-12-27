@@ -23,3 +23,7 @@ server/gql.ts
 
 # Source data. Not sure if we can commit this
 formula-1-world-championship-1950-2020/
+
+# Config file
+server/config.json
+client/config.json

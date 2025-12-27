@@ -1,4 +1,3 @@
-import fs from "fs";
 import { DriverDto, PairingDto } from "./dtoTypes";
 
 export class ConnectionsService {
@@ -9,10 +8,8 @@ export class ConnectionsService {
    * we're storing the data in an object. If we need anything more complex, we
    * should use a proper database.
    */
-  static loadDriverData(path: string): Map<string, DriverDto> {
-    return new Map(
-      JSON.parse(fs.readFileSync(path, "utf8")).map((d) => [d.id, d])
-    );
+  static loadDriverData(drivers: DriverDto[]): Map<string, DriverDto> {
+    return new Map(drivers.map((d) => [d.id, d]));
   }
 
   /**

@@ -15,6 +15,7 @@
             "node",
             "jest"
         ],
+        "resolveJsonModule": true,
     },
     "exclude": ["jest.config.ts"]
 }

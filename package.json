@@ -1,0 +1,23 @@
+{
+    "scripts": {
+        "prebuild-client": "cp config.development.json client/config.json",
+        "prebuild-server": "cp config.development.json server/config.json",
+        "prestart-client": "cp config.development.json client/config.json",
+        "prestart-server": "cp config.development.json server/config.json",
+
+        "build-client": "npm run build --prefix client",
+        "build-server": "npm run build --prefix server",
+        "prebuild": "npm run gql",
+        "build": "concurrently npm:build-server npm:build-client",
+
+        "start-client": "npm run build --prefix client && npm run start --prefix client",
+        "start-server": "concurrently \"npm run watch-build --prefix server\" \"npm run watch-start --prefix server\"",
+        "prestart": "npm run gql",
+        "start": "concurrently npm:start-server npm:start-client",
+
+        "gql": "npm run gql --prefix client"
+    },
+  "devDependencies": {
+    "concurrently": "^9.2.1"
+  }
+}

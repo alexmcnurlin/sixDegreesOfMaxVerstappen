@@ -20,6 +20,7 @@ const GET_DEGREES = graphql(`
   query GetDegreesOfSeparation($driver1: String, $driver2: String) {
     degreesOfSeparation(driver1: $driver1, driver2: $driver2) {
       driver1 {
+        id
         name
         teammates {
           driver {
@@ -28,6 +29,7 @@ const GET_DEGREES = graphql(`
         }
       }
       driver2 {
+        id
         name
       }
       dates {

@@ -4,8 +4,11 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --extensions .ts -d lib",
-    "start": "npm run build && node ./lib/index.js",
+    "build": "babel src --extensions .ts -d lib --watch",
+    "prestart": "babel src --extensions .ts -d lib --watch",
+    "watch-build": "babel src --extensions .ts -d lib --watch",
+    "start": "node ./lib/index.js",
+    "watch-start": "node --watch ./lib/index.js",
     "test": "jest"
   },
   "keywords": [],
