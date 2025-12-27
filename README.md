@@ -32,8 +32,7 @@ Environmet setup - Ensure `npm` is installed with your package manager of choice
 
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
-- Add `appsettings.json` to configure launch parameters
-- Add scripts to run full app, and run all tests
+- Add scripts to run all tests
 - Move codegen config/scripts to shared folder
 - Add playwright tests for DegreesOfSeparation
 - Add 2025 drivers
