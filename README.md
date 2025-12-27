@@ -48,10 +48,11 @@ From the `server/` or `client/` folders: `npm test`
 
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
-- Add playwright tests for DegreesOfSeparation
+- Fix playwright tests
 - Add 2025 drivers
 - Add the total race count to the driver pairings
 - Figure out why dark mode isn't working
-- Change description paragraph in App.tsx
 - Check for outstanding TODOs
 - Deploy to production
+- Make sure that dates in teammate pairings are sorted correctly
+- Why isn't there a link between Lewis Hamilton and Sebastien Buemi?

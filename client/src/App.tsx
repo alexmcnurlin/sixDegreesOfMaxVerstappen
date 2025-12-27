@@ -1,5 +1,14 @@
 import { useQuery } from "@apollo/client/react";
-import { Autocomplete, Card, CircularProgress, Typography } from "@mui/joy";
+import {
+  Accordion,
+  AccordionDetails,
+  AccordionGroup,
+  AccordionSummary,
+  Autocomplete,
+  Card,
+  CircularProgress,
+  Typography,
+} from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
 import { useEffect, useState } from "react";
 import "./App.css";
@@ -75,25 +84,36 @@ const App = () => {
     <CircularProgress />
   ) : (
     <>
-      <span id="description">
-        <Typography>
-          {"You may be familiar with the "}
-          <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
-            Six Degrees of Kevin Bacon
-          </a>
-          - Most actors can be connected to Kevin Bacon by less than six steps.
-          I.e. they were in a movie with someone who was in a movie with Kevin
-          Bacon.
-        </Typography>
-        <br />
-        <Typography>
-          Lets apply that idea to Formula 1 drivers! Drivers are connected if
-          they were teammates at any point (even one race). Max was teammates
-          with Carlos Sainz Jr. (Toro Rosso, 2015), who was teammates with Lando
-          Norris (McLaren, 2019). This means that Lando has 2 degrees of
-          separation from Max!
-        </Typography>
-      </span>
+      <h1>
+        <Typography>The Six Degrees of Max Verstappen!</Typography>
+      </h1>
+
+      <AccordionGroup>
+        <Accordion>
+          <AccordionSummary>How it works....</AccordionSummary>
+          <AccordionDetails>
+            <span id="description">
+              <Typography>
+                {"You may be familiar with the "}
+                <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
+                  Six Degrees of Kevin Bacon
+                </a>
+                - Most actors can be connected to Kevin Bacon by less than six
+                steps. I.e. they were in a movie with someone who was in a movie
+                with Kevin Bacon.
+              </Typography>
+              <br />
+              <Typography>
+                Lets apply that idea to Formula 1 drivers! Drivers are connected
+                if they were teammates at any point (even one race). Max was
+                teammates with Carlos Sainz Jr. (Toro Rosso, 2015), who was
+                teammates with Lando Norris (McLaren, 2019). This means that
+                Lando has 2 degrees of separation from Max!
+              </Typography>
+            </span>
+          </AccordionDetails>
+        </Accordion>
+      </AccordionGroup>
 
       <br />
       <Card>
@@ -122,7 +142,7 @@ const App = () => {
         ) : pairings?.length ? (
           <DegreesOfSeparation id="degreesOfSeparation" pairings={pairings} />
         ) : (
-          ""
+          "There is no connection"
         )}
       </Card>
     </>
