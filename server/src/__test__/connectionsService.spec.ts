@@ -5,7 +5,7 @@ test("can load one driver pairing", () => {
     {
       id: "1",
       name: "first",
-      teammates: ["2"],
+      teammates: [{ id: "2", dates: [] }],
     },
     {
       id: "2",
@@ -14,13 +14,17 @@ test("can load one driver pairing", () => {
     },
   ]);
 
-  expect(actual).toEqual([
-    {
-      driver1: "1",
-      driver2: "2",
-      dates: [],
-    },
-  ]);
+  expect(actual).toEqual(
+    new Map(
+      Object.entries({
+        "1+2": {
+          driver1: "1",
+          driver2: "2",
+          dates: [],
+        },
+      })
+    )
+  );
 });
 
 test("can load multiple driver pairings for one driver", () => {
@@ -28,7 +32,10 @@ test("can load multiple driver pairings for one driver", () => {
     {
       id: "1",
       name: "first",
-      teammates: ["2", "3"],
+      teammates: [
+        { id: "2", dates: [] },
+        { id: "3", dates: [] },
+      ],
     },
     {
       id: "2",
@@ -42,18 +49,22 @@ test("can load multiple driver pairings for one driver", () => {
     },
   ]);
 
-  expect(actual).toEqual([
-    {
-      driver1: "1",
-      driver2: "2",
-      dates: [],
-    },
-    {
-      driver1: "1",
-      driver2: "3",
-      dates: [],
-    },
-  ]);
+  expect(actual).toEqual(
+    new Map(
+      Object.entries({
+        "1+2": {
+          driver1: "1",
+          driver2: "2",
+          dates: [],
+        },
+        "1+3": {
+          driver1: "1",
+          driver2: "3",
+          dates: [],
+        },
+      })
+    )
+  );
 });
 
 test("can load multiple driver pairings for multiple drivers", () => {
@@ -61,12 +72,15 @@ test("can load multiple driver pairings for multiple drivers", () => {
     {
       id: "1",
       name: "first",
-      teammates: ["2", "3"],
+      teammates: [
+        { id: "2", dates: [] },
+        { id: "3", dates: [] },
+      ],
     },
     {
       id: "2",
       name: "second",
-      teammates: ["3"],
+      teammates: [{ id: "3", dates: [] }],
     },
     {
       id: "3",
@@ -75,23 +89,27 @@ test("can load multiple driver pairings for multiple drivers", () => {
     },
   ]);
 
-  expect(actual).toEqual([
-    {
-      driver1: "1",
-      driver2: "2",
-      dates: [],
-    },
-    {
-      driver1: "1",
-      driver2: "3",
-      dates: [],
-    },
-    {
-      driver1: "2",
-      driver2: "3",
-      dates: [],
-    },
-  ]);
+  expect(actual).toEqual(
+    new Map(
+      Object.entries({
+        "1+2": {
+          driver1: "1",
+          driver2: "2",
+          dates: [],
+        },
+        "1+3": {
+          driver1: "1",
+          driver2: "3",
+          dates: [],
+        },
+        "2+3": {
+          driver1: "2",
+          driver2: "3",
+          dates: [],
+        },
+      })
+    )
+  );
 });
 
 test("Pairings are symmetric when the data is symmetric", () => {
@@ -99,27 +117,31 @@ test("Pairings are symmetric when the data is symmetric", () => {
     {
       id: "1",
       name: "first",
-      teammates: ["2"],
+      teammates: [{ id: "2", dates: [] }],
     },
     {
       id: "2",
       name: "second",
-      teammates: ["1"],
+      teammates: [{ id: "1", dates: [] }],
     },
   ]);
 
-  expect(actual).toEqual([
-    {
-      driver1: "1",
-      driver2: "2",
-      dates: [],
-    },
-    {
-      driver1: "2",
-      driver2: "1",
-      dates: [],
-    },
-  ]);
+  expect(actual).toEqual(
+    new Map(
+      Object.entries({
+        "1+2": {
+          driver1: "1",
+          driver2: "2",
+          dates: [],
+        },
+        "2+1": {
+          driver1: "2",
+          driver2: "1",
+          dates: [],
+        },
+      })
+    )
+  );
 });
 
 test("getPath results are not symmetric when the data is not symmetric", () => {
@@ -129,23 +151,23 @@ test("getPath results are not symmetric when the data is not symmetric", () => {
     {
       id: "1",
       name: "first",
-      teammates: ["2"],
+      teammates: [{ id: "2", dates: [] }],
     },
     {
       id: "2",
       name: "second",
-      teammates: ["3"],
+      teammates: [{ id: "3", dates: [] }],
     },
     {
       id: "3",
       name: "third",
-      teammates: ["1"],
+      teammates: [{ id: "1", dates: [] }],
     },
   ];
   const pairings = ConnectionsService.loadDriverPairings(drivers);
   const getMap = ConnectionsService.buildDegreesOfSeparationMap(
     drivers,
-    pairings
+    Array.from(pairings.values())
   );
 
   const expected1 = getMap("1", "2");
@@ -157,13 +179,13 @@ test("getPath results are not symmetric when the data is not symmetric", () => {
 
 test("getPath lets you get the path between two drivers", () => {
   const drivers = [
-    { id: "1", name: "first", teammates: ["2"] },
-    { id: "2", name: "second", teammates: ["1"] },
+    { id: "1", name: "first", teammates: [{ id: "2", dates: [] }] },
+    { id: "2", name: "second", teammates: [{ id: "1", dates: [] }] },
   ];
   const pairings = ConnectionsService.loadDriverPairings(drivers);
   const getPath = ConnectionsService.buildDegreesOfSeparationMap(
     drivers,
-    pairings
+    Array.from(pairings.values())
   );
 
   const path = getPath("1", "2");
@@ -179,13 +201,13 @@ test("getPath lets you get the path between two drivers", () => {
 
 test("getPath will be in reverse for reverse order", () => {
   const drivers = [
-    { id: "1", name: "first", teammates: ["2"] },
-    { id: "2", name: "second", teammates: ["1"] },
+    { id: "1", name: "first", teammates: [{ id: "2", dates: [] }] },
+    { id: "2", name: "second", teammates: [{ id: "1", dates: [] }] },
   ];
   const pairings = ConnectionsService.loadDriverPairings(drivers);
   const getPath = ConnectionsService.buildDegreesOfSeparationMap(
     drivers,
-    pairings
+    Array.from(pairings.values())
   );
 
   const path = getPath("2", "1");
@@ -201,13 +223,13 @@ test("getPath will be in reverse for reverse order", () => {
 
 test("getPath returns empty array for same id", () => {
   const drivers = [
-    { id: "1", name: "first", teammates: ["2"] },
-    { id: "2", name: "second", teammates: ["1"] },
+    { id: "1", name: "first", teammates: [{ id: "2", dates: [] }] },
+    { id: "2", name: "second", teammates: [{ id: "1", dates: [] }] },
   ];
   const pairings = ConnectionsService.loadDriverPairings(drivers);
   const getPath = ConnectionsService.buildDegreesOfSeparationMap(
     drivers,
-    pairings
+    Array.from(pairings.values())
   );
 
   const path = getPath("1", "1");
@@ -223,7 +245,7 @@ test("getPath returns null if no path", () => {
   const pairings = ConnectionsService.loadDriverPairings(drivers);
   const getPath = ConnectionsService.buildDegreesOfSeparationMap(
     drivers,
-    pairings
+    Array.from(pairings.values())
   );
 
   const path = getPath("1", "2");
@@ -233,16 +255,39 @@ test("getPath returns null if no path", () => {
 
 test("getPath gets the path when we have many drivers", () => {
   const drivers = [
-    { id: "1", name: "first", teammates: ["2"] },
-    { id: "2", name: "second", teammates: ["1", "3", "4"] },
-    { id: "3", name: "third", teammates: ["2", "4"] },
-    { id: "4", name: "fourth", teammates: ["2", "3", "5"] },
-    { id: "5", name: "fifth", teammates: ["5"] },
+    { id: "1", name: "first", teammates: [{ id: "2", dates: [] }] },
+    {
+      id: "2",
+      name: "second",
+      teammates: [
+        { id: "1", dates: [] },
+        { id: "3", dates: [] },
+        { id: "4", dates: [] },
+      ],
+    },
+    {
+      id: "3",
+      name: "third",
+      teammates: [
+        { id: "2", dates: [] },
+        { id: "4", dates: [] },
+      ],
+    },
+    {
+      id: "4",
+      name: "fourth",
+      teammates: [
+        { id: "2", dates: [] },
+        { id: "3", dates: [] },
+        { id: "5", dates: [] },
+      ],
+    },
+    { id: "5", name: "fifth", teammates: [{ id: "5", dates: [] }] },
   ];
   const pairings = ConnectionsService.loadDriverPairings(drivers);
   const getPath = ConnectionsService.buildDegreesOfSeparationMap(
     drivers,
-    pairings
+    Array.from(pairings.values())
   );
 
   const path = getPath("1", "5");
