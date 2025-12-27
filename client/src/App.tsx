@@ -120,7 +120,7 @@ const App = () => {
         {loadingDegrees ? (
           <CircularProgress />
         ) : pairings?.length ? (
-          <DegreesOfSeparation pairings={pairings} />
+          <DegreesOfSeparation id="degreesOfSeparation" pairings={pairings} />
         ) : (
           ""
         )}

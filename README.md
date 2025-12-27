@@ -48,7 +48,6 @@ From the `server/` or `client/` folders: `npm test`
 
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
-- Move codegen config/scripts to shared folder
 - Add playwright tests for DegreesOfSeparation
 - Add 2025 drivers
 - Add the total race count to the driver pairings

@@ -50,7 +50,7 @@ test("the user can select drivers", async ({ page }) => {
 
   await expect(page.locator("#driver1")).toHaveAttribute(
     "placeholder",
-    "Select a driver..."
+    "Max Verstappen"
   );
   await expect(page.locator("#driver2")).toHaveAttribute(
     "placeholder",
@@ -90,8 +90,9 @@ test("the user can see the links between drivers", async ({ page }) => {
   await page.locator("#driver2-option-0").click(); // Select the first option
 
   // Verify the degrees of separation are shown.
-  await expect(page.locator("#degreesOfSeparation")).toHaveText(
-    "first was teammates with second from 1950-2025"
+  const degrees = page.locator("#degreesOfSeparation");
+  await expect(degrees).toContainText(
+    "1 degree of separation:0) first1) second"
   );
 });
 
@@ -126,9 +127,11 @@ test("the user can see multiple links between drivers", async ({ page }) => {
   await page.locator("#driver2-option-0").click(); // Select the first option
 
   // Verify
-  await expect(page.locator("#degreesOfSeparation")).toHaveText(
-    "first was teammates with second from 1950-1951\n\nsecond was teammates with third from 1952-2025"
+  const degrees = page.locator("#degreesOfSeparation");
+  await expect(degrees).toContainText(
+    "2 degrees of separation:0) first1) second"
   );
+  await expect(degrees).toContainText("2) third");
 });
 
 test("Max Verstappen is selected by default for the first driver", async ({
@@ -155,7 +158,7 @@ test("Max Verstappen is selected by default for the first driver", async ({
   await page.locator("#driver2").fill("Carlos Sainz Jr.");
   await page.locator("#driver2-option-0").click();
 
-  await expect(page.locator("#degreesOfSeparation")).toHaveText(
-    "Max Verstappen was teammates with Carlos Sainz Jr. for 2015"
+  await expect(page.locator("#degreesOfSeparation")).toContainText(
+    "1 degree of separation:0) Max Verstappen1) Carlos Sainz Jr."
   );
 });

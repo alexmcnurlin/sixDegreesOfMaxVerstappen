@@ -10,13 +10,16 @@ import { Maybe, GetDegreesOfSeparationQuery } from "./gql/graphql";
 type Pairing = GetDegreesOfSeparationQuery["degreesOfSeparation"][0];
 
 interface DegreesOfSeparationProps {
+  id: string;
   pairings: Pairing[];
 }
 
-const DegreesOfSeparation = ({ pairings }: DegreesOfSeparationProps) => {
+const DegreesOfSeparation = ({ pairings, id }: DegreesOfSeparationProps) => {
   return (
-    <>
-      {`${pairings.length} degrees of separation:`}
+    <span id={id}>
+      {pairings.length == 1
+        ? "1 degree of separation:"
+        : `${pairings.length} degrees of separation:`}
       <AccordionGroup transition="1.2s ease">
         <Accordion key={`${pairings[0].driver1.id}-accordion`} disabled>
           <AccordionSummary
@@ -44,7 +47,7 @@ const DegreesOfSeparation = ({ pairings }: DegreesOfSeparationProps) => {
           </Accordion>
         ))}
       </AccordionGroup>
-    </>
+    </span>
   );
 };
 
