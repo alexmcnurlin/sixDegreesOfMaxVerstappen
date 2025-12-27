@@ -8,16 +8,22 @@
         "build-client": "npm run build --prefix client",
         "build-server": "npm run build --prefix server",
         "prebuild": "npm run gql",
-        "build": "concurrently npm:build-server npm:build-client",
+        "build": "concurrently npm:build-*",
 
         "start-client": "npm run build --prefix client && npm run start --prefix client",
-        "start-server": "concurrently \"npm run watch-build --prefix server\" \"npm run watch-start --prefix server\"",
+        "start-server": "concurrently --names build,start \"npm run build-watch --prefix server\" \"npm run start-watch --prefix server\"",
         "prestart": "npm run gql",
-        "start": "concurrently npm:start-server npm:start-client",
+        "start": "concurrently npm:start-*",
 
-        "gql": "npm run gql --prefix client"
+        "gql": "graphql-codegen",
+
+        "install": "concurrently --names server,client \"npm install --prefix server\" \"npm install --prefix client\""
     },
   "devDependencies": {
+    "@graphql-codegen/cli": "^6.1.0",
+    "@graphql-codegen/client-preset": "^5.2.2",
+    "@graphql-codegen/typescript": "^5.0.7",
+    "@graphql-codegen/typescript-resolvers": "^5.1.5",
     "concurrently": "^9.2.1"
   }
 }

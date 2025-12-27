@@ -16,23 +16,38 @@ Note: Development was done in MacOS, but _should_ work in a Windows/Linux develo
 
 Project structure
 
-- `/client` - The UI, using React with Apollo GraphQL Client
-  - `npm start`
-- `/server` - The back end, using Typescript with Apollo GraphQL Server
-  - `npm start`
-- `/data` - The source data used to generate [drivers.json](server/drivers.json) in the server.
+- `/client` - The UI, using Typescript, React, Apollo GraphQL Client. Built with `vite`
+- `/server` - The back end, using Typescript (via `babel`) with Apollo GraphQL Server.
+- `/data` - The source data used to generate [drivers.json](server/drivers.json) in the server. Generated with Python
 
-Environmet setup - Ensure `npm` is installed with your package manager of choice
+### Environment setup
 
-- `winget install npm` # TODO: Verify this is right
-- `brew install npm`
-- `apt install npm` # TODO: Verify this is right
+1. [Install `Node.js`](https://nodejs.org/en/download)
+2. Run `npm install` in the CLI
+   - There are `package.json` files in the root of the project, the `server`, and the `client` folders. Running `npm install` will install packages for all of them.
+
+### Run development environment
+
+`npm start`
+
+- This will do everything needed to build/run the server and client.
+
+To run everything individually
+
+- Copy config files: `npm run prebuild-client` or `npm run prebuild-server`
+- Generate GraphQL: `npm run gql`
+- Build server/client (from `server/` or `client/`): `npm run build`
+- Run server/client (from `server/` or `client/`): `npm start`
+  - If you want the Server to auto-reload when changes are made, you have to run `npm run build-watch` and `npm run start-watch` in separate terminals.
+
+### Test
+
+From the `server/` or `client/` folders: `npm test`
 
 ## TODO
 
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
-- Add scripts to run all tests
 - Move codegen config/scripts to shared folder
 - Add playwright tests for DegreesOfSeparation
 - Add 2025 drivers
