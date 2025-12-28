@@ -73,6 +73,7 @@ def register_pairing(d1, d2):
     d2_id = str(d2["driverId"])
     race = d1["name"]
     date = d1["date"]
+    url = d1["url_y"]
 
     # Add the drivers to our dictionary, if they aren't in there
     if d1_id not in results:
@@ -86,6 +87,8 @@ def register_pairing(d1, d2):
     if last_teammate and last_teammate["id"] == d2_id:
         last_teammate["endRace"] = race
         last_teammate["endDate"] = date
+        last_teammate["endUrl"] = url
+        last_teammate["count"] += 1
     else:
         # If they weren't teammates, add this to the list
         d1_teammates.append(
@@ -93,8 +96,11 @@ def register_pairing(d1, d2):
                 "id": d2_id,
                 "startRace": race,
                 "startDate": date,
+                "startUrl": url,
+                "count": 1,
                 "endRace": race,
                 "endDate": date,
+                "endUrl": url,
             }
         )
 
@@ -122,8 +128,11 @@ def collapse_teammates(driver):
                     {
                         "startDate": tm["startDate"],
                         "startRace": tm["startRace"],
+                        "startUrl": tm["startUrl"],
+                        "count": tm["count"],
                         "endDate": tm["endDate"],
                         "endRace": tm["endRace"],
+                        "endUrl": tm["endUrl"],
                     }
                     for tm in tms
                 ],

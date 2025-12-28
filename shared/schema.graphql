@@ -16,10 +16,13 @@ type Pairing {
 }
 
 type GrandPrixRange {
-  startRace: String
-  startDate: String
-  endRace: String
-  endDate: String
+  startRace: String!
+  startDate: String!
+  startUrl: String!
+  count: Int!
+  endRace: String!
+  endDate: String!
+  endUrl: String!
 }
 
 type Query {

@@ -44,8 +44,11 @@ const GET_DEGREES = graphql(`
       dates {
         startDate
         startRace
+        startUrl
+        count
         endDate
         endRace
+        endUrl
       }
     }
   }
@@ -141,8 +144,10 @@ const App = () => {
           <CircularProgress />
         ) : pairings?.length ? (
           <DegreesOfSeparation id="degreesOfSeparation" pairings={pairings} />
-        ) : (
+        ) : driver1 && driver2 ? (
           "There is no connection"
+        ) : (
+          ""
         )}
       </Card>
     </>

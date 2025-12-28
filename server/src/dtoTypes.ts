@@ -18,6 +18,9 @@ export type PairingDto = {
 export type GrandPrixRangeDto = {
   startDate: string;
   startRace: string;
+  startUrl: string;
+  count: number;
   endDate: string;
   endRace: string;
+  endUrl: string;
 };
