@@ -68,9 +68,9 @@ export class ConnectionsService {
     });
 
     // Run the Floyd-Warshall algorithm
-    for (let i = 0; i < length; i++) {
-      for (let j = 0; j < length; j++) {
-        for (let k = 0; k < length; k++) {
+    for (let k = 0; k < length; k++) {
+      for (let i = 0; i < length; i++) {
+        for (let j = 0; j < length; j++) {
           if (degrees[i][j] > degrees[i][k] + degrees[k][j]) {
             degrees[i][j] = degrees[i][k] + degrees[k][j];
             pathMap[i][j] = pathMap[k][j];

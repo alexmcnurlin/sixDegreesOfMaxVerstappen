@@ -1,7 +1,7 @@
 import argparse
 import json
 from collections import defaultdict, OrderedDict
-from itertools import groupby, product
+from itertools import combinations
 from pathlib import Path
 
 import pandas as pd
@@ -134,7 +134,6 @@ def collapse_teammates(driver):
 
 
 if __name__ == "__main__":
-
     parser = argparse.ArgumentParser(
         description="Translates CSV driver data into a structured JSON."
     )
@@ -150,9 +149,21 @@ if __name__ == "__main__":
 
     with_drivers = pd.merge(race_results, drivers, how="left", on="driverId")
     with_races = pd.merge(with_drivers, races, how="left", on="raceId")
-    with_races.sort_values("date")
+    with_races = with_races.sort_values("date", ascending=True)
+    # Filter out statuses where the driver didn't start the race
+    # There are a few of these where the driver DID finish the race, but I can't
+    # find a better way to determine the truth
+    # 54 = Withdrew
+    # 73 = Injured (usually during quali. All instances are a DNS)
+    # 77 = 107% rule
+    # 81 = Did Not Qualify
+    # 82 = Injury (see "Injured". The only "injury" that started a race was Jonny Herbert, 1998 Brazilian GP)
+    # 89 = Safety Concerns
+    # 96 = Excluded
+    # 97 = Did Not Prequalify
+    with_races = with_races.query("statusId not in [54, 73, 77, 81, 96, 97]")
 
-    pairings = with_races.groupby(["raceId", "constructorId"])
+    pairings = with_races.groupby(["raceId", "constructorId"], sort=False)
     results = defaultdict(lambda: {"teammates": []})
 
     def build_driver_data(series):
@@ -160,7 +171,7 @@ if __name__ == "__main__":
             return
         if len(series) > 2:
             indices = range(0, len(series))
-            for i1, i2 in product(indices, indices):
+            for i1, i2 in combinations(indices, 2):
                 if i1 != i2:
                     build_driver_data(series.iloc[[i1, i2]])
             return
