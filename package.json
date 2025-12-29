@@ -1,21 +1,18 @@
 {
     "scripts": {
-        "prebuild-client": "cp config.development.json client/config.json",
-        "prebuild-server": "cp config.development.json server/config.json",
-        "prestart-client": "cp config.development.json client/config.json",
-        "prestart-server": "cp config.development.json server/config.json",
+        "config": "cp config.development.json client/config.json && cp config.development.json server/config.json",
+        "release:config": "cp config.prod.json client/config.json && cp config.prod.json server/config.json",
+        "gql": "graphql-codegen",
 
-        "build-client": "npm run build --prefix client",
-        "build-server": "npm run build --prefix server",
-        "prebuild": "npm run gql",
-        "build": "concurrently npm:build-*",
+        "prerelease:build-client": "concurrently npm:gql npm:release:config",
+        "prerelease:build-server": "concurrently npm:gql npm:release:config",
+        "release:build-client": "npm run release:build --prefix client",
+        "release:build-server": "npm run release:build --prefix server",
 
         "start-client": "npm run build --prefix client && npm run start --prefix client",
         "start-server": "concurrently --names build,start \"npm run build-watch --prefix server\" \"npm run start-watch --prefix server\"",
-        "prestart": "npm run gql",
+        "prestart": "concurrently npm:gql npm:config",
         "start": "concurrently npm:start-*",
-
-        "gql": "graphql-codegen",
 
         "install": "concurrently --names server,client \"npm install --prefix server\" \"npm install --prefix client\""
     },

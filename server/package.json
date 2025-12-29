@@ -6,7 +6,6 @@
   "scripts": {
     "build": "babel src --extensions .ts -d lib",
     "build-watch": "babel src --extensions .ts -d lib --watch",
-    "prerelease:build": "cp ../config.prod.json config.json",
     "release:build": "babel src --extensions .ts -d lib",
     "start": "node ./lib/index.js",
     "start-watch": "node --watch ./lib/index.js",
