@@ -8,7 +8,9 @@ import App from "./App.tsx";
 import "./index.css";
 
 const client = new ApolloClient({
-  link: new HttpLink({ uri: config["serverUrl"] + ":" + config["serverPort"] }),
+  link: new HttpLink({
+    uri: `${config["serverUrl"]}:${config["serverPort"]}${config["serverRoute"]}`,
+  }),
   cache: new InMemoryCache(),
 });
 

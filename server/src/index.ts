@@ -1,12 +1,16 @@
 import { ApolloServer } from "@apollo/server";
-import { startStandaloneServer } from "@apollo/server/standalone";
+import { ApolloServerPluginDrainHttpServer } from "@apollo/server/plugin/drainHttpServer";
+import { expressMiddleware } from "@as-integrations/express5";
 import { GraphQLFileLoader } from "@graphql-tools/graphql-file-loader";
 import { loadSchema } from "@graphql-tools/load";
+import cors from "cors";
+import express from "express";
+import http from "http";
+import config from "../config.json";
+import drivers from "../drivers.json";
 import { Driver, Resolvers } from "../gql";
 import { ConnectionsService } from "./connectionsService";
 import { DriverDto, PairingDto } from "./dtoTypes";
-import config from "../config.json";
-import drivers from "../drivers.json";
 
 export interface MyContext {
   drivers: Map<string, DriverDto>;
@@ -63,14 +67,28 @@ const resolvers: Resolvers<MyContext> = {
 
 loadSchema("../shared/schema.graphql", {
   loaders: [new GraphQLFileLoader()],
-})
-  .then((typeDefs) => {
-    const server = new ApolloServer<MyContext>({
-      typeDefs,
-      resolvers,
-    });
+}).then(async (typeDefs) => {
+  const app = express();
+  const httpServer = http.createServer(app);
 
-    return startStandaloneServer(server, {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    plugins: [ApolloServerPluginDrainHttpServer({ httpServer })],
+  });
+
+  await server.start();
+
+  app.use(
+    config["serverRoute"],
+    cors<cors.CorsRequest>({
+      origin: [
+        `${config["clientUrl"]}:${config["clientPort"]}`,
+        "https://studio.apollographql.com",
+      ],
+    }),
+    express.json(),
+    expressMiddleware(server, {
       context: async () => ({
         drivers: driversMap,
         pairings: pairings,
@@ -80,9 +98,13 @@ loadSchema("../shared/schema.graphql", {
           name: driversMap.get(id).name,
         }),
       }),
-      listen: { port: config["serverPort"] },
-    });
-  })
-  .then(({ url }) => {
-    console.log(`🚀  Server ready at: ${url}`);
-  });
+    })
+  );
+
+  await new Promise<void>((resolve) =>
+    httpServer.listen({ port: config["serverPort"] }, resolve)
+  );
+  console.log(
+    `🚀 Server ready at ${config["serverUrl"]}:${config["serverPort"]}${config["serverRoute"]}`
+  );
+});

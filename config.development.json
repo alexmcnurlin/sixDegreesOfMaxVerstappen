@@ -1,6 +1,7 @@
 {
     "serverUrl": "http://localhost",
+    "serverRoute": "/graphql",
     "serverPort": 5172,
-    "clientUrl": "https://localhost",
+    "clientUrl": "http://localhost",
     "clientPort": 5173
 }
