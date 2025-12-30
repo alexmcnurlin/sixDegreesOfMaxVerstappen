@@ -11,7 +11,7 @@ frontend:
           commands:
               - 'npm run amplify-postbuild'
   artifacts:
-      baseDirectory: .amplify-hostigitg
+      baseDirectory: .amplify-hosting
       files:
           - '**/*'
   cache:
