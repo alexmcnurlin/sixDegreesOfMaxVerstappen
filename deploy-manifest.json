@@ -19,6 +19,10 @@
       "target": {
         "kind": "ImageOptimization",
         "cacheControl": "public, max-age=3600, immutable"
+      },
+      "fallback": {
+        "kind": "Compute",
+        "src": "default"
       }
     },
     {
