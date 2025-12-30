@@ -16,7 +16,8 @@ playwright/.auth/
 
 # Codegenned fils
 client/src/gql/
-server/gql.ts
+server/src/gql.ts
+server/src/schema.graphql
 
 # Python virtual environment
 .venv
@@ -27,3 +28,6 @@ formula-1-world-championship-1950-2020/
 # Config file
 server/config.json
 client/config.json
+
+# Amplify build files
+.amplify-hosting

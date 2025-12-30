@@ -1,8 +1,9 @@
 {
     "scripts": {
-        "config": "cp config.development.json client/config.json && cp config.development.json server/config.json",
-        "release:config": "cp config.prod.json client/config.json && cp config.prod.json server/config.json",
-        "gql": "graphql-codegen",
+        "config": "cp config.development.json client/config.json && cp config.development.json server/src/config.json",
+        "copy-schema": "cp shared/schema.graphql server/src/",
+        "release:config": "cp config.prod.json client/config.json && cp config.prod.json server/src/config.json",
+        "gql": "concurrently \"graphql-codegen\" npm:copy-schema",
 
         "prerelease:build-client": "concurrently npm:gql npm:release:config",
         "prerelease:build-server": "concurrently npm:gql npm:release:config",

@@ -4,9 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "build": "babel src --extensions .ts -d lib",
-    "build-watch": "babel src --extensions .ts -d lib --watch",
-    "release:build": "babel src --extensions .ts -d lib",
+    "build": "babel src --extensions .ts -d lib --copy-files",
+    "build-watch": "babel src --extensions .ts -d lib --copy-files --watch",
+    "release:build": "babel src --extensions .ts -d lib --copy-files",
     "start": "node ./lib/index.js",
     "start-watch": "node --watch ./lib/index.js",
     "test": "jest"

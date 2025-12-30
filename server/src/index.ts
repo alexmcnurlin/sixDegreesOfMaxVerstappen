@@ -6,9 +6,9 @@ import { loadSchema } from "@graphql-tools/load";
 import cors from "cors";
 import express from "express";
 import http from "http";
-import config from "../config.json";
-import drivers from "../drivers.json";
-import { Driver, Resolvers } from "../gql";
+import config from "./config.json";
+import drivers from "./drivers.json";
+import { Driver, Resolvers } from "./gql";
 import { ConnectionsService } from "./connectionsService";
 import { DriverDto, PairingDto } from "./dtoTypes";
 
@@ -65,7 +65,7 @@ const resolvers: Resolvers<MyContext> = {
   },
 };
 
-loadSchema("../shared/schema.graphql", {
+loadSchema("./schema.graphql", {
   loaders: [new GraphQLFileLoader()],
 }).then(async (typeDefs) => {
   const app = express();
