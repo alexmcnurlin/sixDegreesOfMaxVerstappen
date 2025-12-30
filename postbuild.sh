@@ -3,10 +3,9 @@
 rm -rf ./.amplify-hosting
  
 mkdir -p ./.amplify-hosting/compute
-mkdir -p ./.amplify-hosting/compute/default
  
 cp -vr ./server/lib/ ./.amplify-hosting/compute/default
-cp -r ./server/node_modules ./.amplify-hosting/compute/default/node_modules
+cp -r ./server/node_modules ./.amplify-hosting/compute/default
  
 # cp -r public ./.amplify-hosting/static
  
