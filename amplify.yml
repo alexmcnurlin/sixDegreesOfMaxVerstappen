@@ -19,4 +19,4 @@ applications:
       cache:
           paths:
               - '.npm/**/*'
-    appRoot: packages/nextjs-app
+    appRoot: server
