@@ -38,6 +38,13 @@
         "kind": "Compute",
         "src": "default"
       }
+    },
+    {
+      "path": "/*",
+      "target": {
+        "kind": "compute",
+        "src": "default"
+      }
     }
   ],
   "computeResources": [
