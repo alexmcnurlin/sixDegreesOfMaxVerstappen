@@ -9,4 +9,4 @@ cp -r ./server/node_modules ./.amplify-hosting/compute/default
  
 cp -vr ./client/dist/* ./.amplify-hosting/static
  
-cp deploy-manifest.json ./.amplify-hosting/deploy-manifest.json
+cp server/deploy-manifest.json ./.amplify-hosting/deploy-manifest.json
