@@ -4,15 +4,15 @@ applications:
       phases:
           preBuild:
               commands:
-                  - 'npm ci --cache .npm --prefer-offline'
+                  - 'npm ci --cache .npm --prefer-offline --prefix ../'
           build:
               commands:
-                  - 'npm run release:build-server'
+                  - 'npm run release:build-server --prefix ../'
           postBuild:
               commands:
-                  - 'npm run amplify-postbuild'
+                  - 'npm run amplify-postbuild --prefix ../'
       artifacts:
-          baseDirectory: .amplify-hosting
+          baseDirectory: ../.amplify-hosting
           files:
               - '**/*'
       cache:
@@ -23,12 +23,12 @@ applications:
       phases:
           preBuild:
               commands:
-                  - 'npm ci --cache .npm --prefer-offline'
+                  - 'npm ci --cache .npm --prefer-offline --prefix ../'
           build:
               commands:
-                  - 'npm run release:build-client'
+                  - 'npm run release:build-client --prefix ../'
       artifacts:
-          baseDirectory: client/dist
+          baseDirectory: dist
           files:
               - '**/*'
       cache:
