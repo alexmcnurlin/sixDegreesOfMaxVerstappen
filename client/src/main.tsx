@@ -9,7 +9,7 @@ import "./index.css";
 
 const client = new ApolloClient({
   link: new HttpLink({
-    uri: `${config["serverUrl"]}:${config["serverPort"]}${config["serverRoute"]}`,
+    uri: config[serverUri],
   }),
   cache: new InMemoryCache(),
 });
