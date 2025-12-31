@@ -1,8 +1,8 @@
 {
-    "serverUrl": "https://master.dn4z36top1g4t.amplifyapp.com",
+    "serverDomain": "https://master.dn4z36top1g4t.amplifyapp.com",
     "serverPort": 3000,
     "serverRoute": "/graphql",
-    "serverUri": "https://master.dn4z36top1g4t.amplifyapp.com/graphql",
+    "gqlApi": "https://master.dn4z36top1g4t.amplifyapp.com/graphql",
     "clientUrl": "https://master.d29spyhbzpzp7j.amplifyapp.com",
     "clientPort": 5173
 }

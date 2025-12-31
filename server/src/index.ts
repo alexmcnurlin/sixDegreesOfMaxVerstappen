@@ -108,6 +108,6 @@ loadSchema(schemaPath, {
     httpServer.listen({ port: config["serverPort"] }, resolve)
   );
   console.log(
-    `🚀 Server ready at ${config["serverUrl"]}:${config["serverPort"]}${config["serverRoute"]}`
+    `🚀 Server ready at ${config["serverDomain"]}:${config["serverPort"]}${config["serverRoute"]}`
   );
 });

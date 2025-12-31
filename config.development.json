@@ -1,8 +1,8 @@
 {
-    "serverUrl": "http://localhost",
+    "serverDomain": "http://localhost",
     "serverRoute": "/graphql",
     "serverPort": 5172,
-    "serverUri": "http://localhost:5172/graphql",
+    "gqlApi": "http://localhost:5172/graphql",
     "clientUrl": "http://localhost",
     "clientPort": 5173
 }
