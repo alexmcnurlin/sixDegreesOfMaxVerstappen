@@ -7,6 +7,7 @@ frontend:
         build:
             commands:
                 - 'npm run release:build-server'
+                - 'npm run release:build-client'
         postBuild:
             commands:
                 - 'npm run amplify-postbuild'
