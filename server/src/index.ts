@@ -82,13 +82,14 @@ loadSchema(schemaPath, {
 
   await server.start();
 
+  const corsAllowUrl = config["clientDomain"].includes("localhost")
+    ? `${config["clientDomain"]}:${config["clientPort"]}`
+    : config["clientDomain"];
+
   app.use(
     config["serverRoute"],
     cors<cors.CorsRequest>({
-      origin: [
-        `${config["clientUrl"]}:${config["clientPort"]}`,
-        "https://studio.apollographql.com",
-      ],
+      origin: [corsAllowUrl, "https://studio.apollographql.com"],
     }),
     express.json(),
     expressMiddleware(server, {
