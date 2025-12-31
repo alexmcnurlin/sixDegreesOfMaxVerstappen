@@ -26,7 +26,7 @@
       }
     },
     {
-      "path": "/*",
+      "path": "/*.*",
       "target": {
         "kind": "Static",
         "cacheControl": "public, max-age=2"
@@ -34,6 +34,13 @@
     },
     {
       "path": "/graphql",
+      "target": {
+        "kind": "Compute",
+        "src": "default"
+      }
+    },
+    {
+      "path": "/*",
       "target": {
         "kind": "Compute",
         "src": "default"
