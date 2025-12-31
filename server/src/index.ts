@@ -11,6 +11,7 @@ import drivers from "./drivers.json";
 import { Driver, Resolvers } from "./gql";
 import { ConnectionsService } from "./connectionsService";
 import { DriverDto, PairingDto } from "./dtoTypes";
+import path from "path";
 
 export interface MyContext {
   drivers: Map<string, DriverDto>;
@@ -65,7 +66,9 @@ const resolvers: Resolvers<MyContext> = {
   },
 };
 
-loadSchema("./schema.graphql", {
+const schemaPath = path.join(__dirname, "./schema.graphql");
+
+loadSchema(schemaPath, {
   loaders: [new GraphQLFileLoader()],
 }).then(async (typeDefs) => {
   const app = express();

@@ -26,7 +26,7 @@ server/src/schema.graphql
 formula-1-world-championship-1950-2020/
 
 # Config file
-server/config.json
+server/src/config.json
 client/config.json
 
 # Amplify build files
