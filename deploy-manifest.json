@@ -42,7 +42,7 @@
     {
       "path": "/*",
       "target": {
-        "kind": "compute",
+        "kind": "Compute",
         "src": "default"
       }
     }
