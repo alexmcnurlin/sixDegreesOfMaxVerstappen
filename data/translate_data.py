@@ -12,7 +12,7 @@ def register_pairing(d1, d2):
     d2_id = str(d2["driver_id"])
     race = d1["name"]
     date = d1["date"]
-    url = d1["wikipedia_y"]
+    url = d1["wikipedia_x"]
 
     # Add the drivers to our dictionary, if they aren't in there
     if d1_id not in results:
