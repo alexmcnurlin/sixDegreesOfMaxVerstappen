@@ -49,7 +49,6 @@ From the `server/` or `client/` folders: `npm test`
 Here's a list of TODO items that I want to complete before I'd consider this project presentable
 
 - Update playwright tests to include race count
-- Add 2025 drivers
 - Figure out why dark mode isn't working
 - Check for outstanding TODOs
 - Deploy to production
