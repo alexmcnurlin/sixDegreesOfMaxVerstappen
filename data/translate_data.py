@@ -10,13 +10,15 @@ import pandas as pd
 def register_pairing(d1, d2):
     d1_id = str(d1["driver_id"])
     d2_id = str(d2["driver_id"])
+    driver_url = d1["wikipedia_y"]
     race = d1["name"]
     date = d1["date"]
-    url = d1["wikipedia_x"]
+    race_url = d1["wikipedia_x"]
 
     # Add the drivers to our dictionary, if they aren't in there
     if d1_id not in results:
         results[d1_id]["id"] = d1_id
+        results[d1_id]["url"] = driver_url
         results[d1_id]["name"] = d1["forename"] + " " + d1["surname"]
 
     d1_teammates = results[d1_id]["teammates"]
@@ -26,7 +28,7 @@ def register_pairing(d1, d2):
     if last_teammate and last_teammate["id"] == d2_id:
         last_teammate["endRace"] = race
         last_teammate["endDate"] = date
-        last_teammate["endUrl"] = url
+        last_teammate["endUrl"] = race_url
         last_teammate["count"] += 1
     else:
         # If they weren't teammates, add this to the list
@@ -35,11 +37,11 @@ def register_pairing(d1, d2):
                 "id": d2_id,
                 "startRace": race,
                 "startDate": date,
-                "startUrl": url,
+                "startUrl": race_url,
                 "count": 1,
                 "endRace": race,
                 "endDate": date,
-                "endUrl": url,
+                "endUrl": race_url,
             }
         )
 
@@ -58,21 +60,29 @@ def collapse_teammates(driver):
         teammates[key].append(tm)
 
     return {
-        "id": driver["id"],
-        "name": driver["name"],
+        **driver,
         "teammates": [
             {
                 "id": tm_id,
                 "dates": [
-                    {
-                        "startDate": tm["startDate"],
-                        "startRace": tm["startRace"],
-                        "startUrl": tm["startUrl"],
-                        "count": tm["count"],
-                        "endDate": tm["endDate"],
-                        "endRace": tm["endRace"],
-                        "endUrl": tm["endUrl"],
-                    }
+                    (
+                        {
+                            "startDate": tm["startDate"],
+                            "startRace": tm["startRace"],
+                            "startUrl": tm["startUrl"],
+                            "count": tm["count"],
+                            "endDate": tm["endDate"],
+                            "endRace": tm["endRace"],
+                            "endUrl": tm["endUrl"],
+                        }
+                        if tm["count"] > 1
+                        else {
+                            "startDate": tm["startDate"],
+                            "startRace": tm["startRace"],
+                            "startUrl": tm["startUrl"],
+                            "count": tm["count"],
+                        }
+                    )
                     for tm in tms
                 ],
             }

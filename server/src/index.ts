@@ -97,10 +97,14 @@ loadSchema(schemaPath, {
         drivers: driversMap,
         pairings: pairings,
         driversList: driversList,
-        getDriver: (id: string) => ({
-          id: id,
-          name: driversMap.get(id).name,
-        }),
+        getDriver: (id: string) => {
+          const driver = driversMap.get(id);
+          return {
+            id: id,
+            name: driver.name,
+            url: driver.url,
+          };
+        },
       }),
     })
   );

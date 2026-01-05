@@ -10,7 +10,7 @@ import {
   Typography,
 } from "@mui/joy";
 import type { Maybe } from "graphql/jsutils/Maybe";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import "./App.css";
 import DegreesOfSeparation from "./DegreesOfSeparation";
 import { graphql } from "./gql/gql";
@@ -31,6 +31,7 @@ const GET_DEGREES = graphql(`
       driver1 {
         id
         name
+        url
         teammates {
           driver {
             name
@@ -40,6 +41,7 @@ const GET_DEGREES = graphql(`
       driver2 {
         id
         name
+        url
       }
       dates {
         startDate
@@ -58,23 +60,17 @@ const App = () => {
   const { data: driverData, loading: loadingDrivers } = useQuery(GET_DRIVERS);
   const drivers = driverData?.drivers ?? [];
 
+  const [driver1, setDriver1] = useState<Maybe<(typeof drivers)[0]>>();
+  const [driver2, setDriver2] = useState<Maybe<(typeof drivers)[0]>>();
+
+  // use Max Verstappen as the placeholder if it's not filled in
   const max = drivers.find((d) => d.name === "Max Verstappen");
-
-  const [driver1, setDriver1] = useState<Maybe<Driver>>();
-  const [driver2, setDriver2] = useState<Maybe<Driver>>();
-
-  useEffect(() => {
-    if (!driver1 && drivers) {
-      setDriver1(max);
-    }
-  }, [drivers, driver1]);
-
   const { data: degreesData, loading: loadingDegrees } = useQuery(GET_DEGREES, {
     variables: {
-      driver1: driver1?.id ?? "",
+      driver1: driver1?.id ?? max?.id ?? "",
       driver2: driver2?.id ?? "",
     },
-    skip: !driver1 || !driver2,
+    skip: !(driver1 ?? max) || !driver2,
   });
 
   const pairings = degreesData?.degreesOfSeparation;
@@ -93,7 +89,7 @@ const App = () => {
           <AccordionDetails>
             <span id="description">
               <Typography>
-                {"You may be familiar with the "}
+                You may be familiar with the{" "}
                 <a href="https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon">
                   Six Degrees of Kevin Bacon
                 </a>

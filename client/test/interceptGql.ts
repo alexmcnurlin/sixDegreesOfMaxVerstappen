@@ -20,7 +20,7 @@ export async function interceptGql(
   const reqs: CalledWith[] = [];
 
   // Register a new handler which intercepts all GQL requests.
-  await page.route("http://localhost:5172/", function (route: Route) {
+  await page.route("http://localhost:5172/graphql", function (route: Route) {
     const req = route.request().postDataJSON();
 
     // Pass along to the previous handler in the chain if the request

@@ -1,6 +1,7 @@
 type Driver {
   id: String!
   name: String!
+  url: String!
   teammates: [Teammate!]
 }
 
@@ -20,9 +21,9 @@ type GrandPrixRange {
   startDate: String!
   startUrl: String!
   count: Int!
-  endRace: String!
-  endDate: String!
-  endUrl: String!
+  endRace: String
+  endDate: String
+  endUrl: String
 }
 
 type Query {

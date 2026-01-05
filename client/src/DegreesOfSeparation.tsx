@@ -4,6 +4,8 @@ import {
   AccordionDetails,
   AccordionGroup,
   AccordionSummary,
+  Link,
+  Typography,
 } from "@mui/joy";
 import { Maybe, GetDegreesOfSeparationQuery } from "./gql/graphql";
 
@@ -46,7 +48,11 @@ const DegreesOfSeparation = ({ pairings, id }: DegreesOfSeparationProps) => {
               id={`driver-${p.driver2.id}-accordion-details`}
               key={`driver-${p.driver2.id}-accordion-details`}
             >
-              {`${p.driver1.name} was teammates with ${p.driver2.name}`}
+              <Typography>
+                <Link href={p.driver1.url ?? ""}>{p.driver1.name}</Link>
+                {` was teammates with `}
+                <Link href={p.driver2.url ?? ""}>{p.driver2.name}</Link>
+              </Typography>
 
               <table>
                 <tbody>
@@ -84,11 +90,13 @@ const DegreesSingleRace = ({ slug, data }: degreesRaceProps) => {
         <td key={`${slug}-from`}>{`for: `}</td>
         <td key={`${slug}-from-race`}>
           {data.startUrl ? (
-            <a href={data.startUrl}>
-              <strong key={`${slug}-start-race`}>{`${getYear(
-                data?.startDate ?? ""
-              )} ${data.startRace}`}</strong>
-            </a>
+            <Typography>
+              <Link href={data.startUrl}>
+                <strong key={`${slug}-start-race`}>{`${getYear(
+                  data?.startDate ?? ""
+                )} ${data.startRace}`}</strong>
+              </Link>
+            </Typography>
           ) : (
             <strong key={`${slug}-start-race`}>{`${getYear(
               data?.startDate ?? ""
@@ -108,35 +116,39 @@ const DegreesMultipleRaces = ({ slug, data }: degreesRaceProps) => {
         <td key={`${slug}-count`}>{`${data.count} races`}</td>
       </tr>
       <tr key={`${slug}-from-row`}>
-        <td key={`${slug}-from`}>{`from: `}</td>
+        <td key={`${slug}-from`}>{`from:`}</td>
         <td key={`${slug}-from-race`}>
-          {data.startUrl ? (
-            <a href={data.startUrl}>
+          <Typography>
+            {data.startUrl ? (
+              <Link href={data.startUrl}>
+                <strong key={`${slug}-start-race`}>{`${getYear(
+                  data?.startDate ?? ""
+                )} ${data.startRace}`}</strong>
+              </Link>
+            ) : (
               <strong key={`${slug}-start-race`}>{`${getYear(
                 data?.startDate ?? ""
               )} ${data.startRace}`}</strong>
-            </a>
-          ) : (
-            <strong key={`${slug}-start-race`}>{`${getYear(
-              data?.startDate ?? ""
-            )} ${data.startRace}`}</strong>
-          )}
+            )}
+          </Typography>
         </td>
       </tr>
       <tr key={`${slug}-to-row`}>
         <td key={`${slug}-to`}>{`to:`}</td>
         <td key={`${slug}-end-row`}>
-          {data.endUrl ? (
-            <a href={data.endUrl}>
+          <Typography>
+            {data.endUrl ? (
+              <Link href={data.endUrl}>
+                <strong key={`${slug}-end-race`}>{`${getYear(
+                  data?.endDate ?? ""
+                )} ${data.endRace}`}</strong>
+              </Link>
+            ) : (
               <strong key={`${slug}-end-race`}>{`${getYear(
                 data?.endDate ?? ""
               )} ${data.endRace}`}</strong>
-            </a>
-          ) : (
-            <strong key={`${slug}-end-race`}>{`${getYear(
-              data?.endDate ?? ""
-            )} ${data.endRace}`}</strong>
-          )}
+            )}
+          </Typography>
         </td>
       </tr>
     </>

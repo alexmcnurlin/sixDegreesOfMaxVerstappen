@@ -1,6 +1,7 @@
 export type DriverDto = {
   id: string;
   name: string;
+  url: string;
   teammates: TeammateDto[];
 };
 
