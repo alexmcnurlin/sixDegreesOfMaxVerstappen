@@ -1,4 +1,4 @@
-import { memo } from "react";
+import { Fragment, memo } from "react";
 import {
   Accordion,
   AccordionDetails,
@@ -48,24 +48,40 @@ const DegreesOfSeparation = ({ pairings, id }: DegreesOfSeparationProps) => {
               id={`driver-${p.driver2.id}-accordion-details`}
               key={`driver-${p.driver2.id}-accordion-details`}
             >
-              <Typography>
-                <Link href={p.driver1.url ?? ""}>{p.driver1.name}</Link>
+              <Typography key={`${p.driver2.id}-driver-links`}>
+                <Link
+                  key={`${p.driver2.id}-driver1-link`}
+                  href={p.driver1.url ?? ""}
+                >
+                  {p.driver1.name}
+                </Link>
                 {` was teammates with `}
-                <Link href={p.driver2.url ?? ""}>{p.driver2.name}</Link>
+                <Link
+                  key={`${p.driver2.id}-driver2-link`}
+                  href={p.driver2.url ?? ""}
+                >
+                  {p.driver2.name}
+                </Link>
               </Typography>
 
-              <table>
-                <tbody>
+              <table key={`${p.driver2.id}-links-table`}>
+                <tbody key={`${p.driver2.id}-links-table-body`}>
                   {p.dates?.map((date, j) => {
                     const slug = `date-${i}-${j}`;
                     return (
-                      <>
+                      <Fragment key={`${slug}-fragment`}>
                         {date.count == 1 ? (
-                          <DegreesSingleRace data={date} slug={slug} />
+                          <DegreesSingleRace
+                            key={`${slug}-degrees`}
+                            data={date}
+                          />
                         ) : (
-                          <DegreesMultipleRaces data={date} slug={slug} />
+                          <DegreesMultipleRaces
+                            key={`${slug}-degrees`}
+                            data={date}
+                          />
                         )}
-                      </>
+                      </Fragment>
                     );
                   })}
                 </tbody>
@@ -79,28 +95,27 @@ const DegreesOfSeparation = ({ pairings, id }: DegreesOfSeparationProps) => {
 };
 
 interface degreesRaceProps {
-  slug: string;
   data: Data;
 }
 
-const DegreesSingleRace = ({ slug, data }: degreesRaceProps) => {
+const DegreesSingleRace = ({ data }: degreesRaceProps) => {
   return (
     <>
-      <tr key={`${slug}-from-row`}>
-        <td key={`${slug}-from`}>{`for: `}</td>
-        <td key={`${slug}-from-race`}>
+      <tr>
+        <td>{`for:`}</td>
+        <td>
           {data.startUrl ? (
             <Typography>
               <Link href={data.startUrl}>
-                <strong key={`${slug}-start-race`}>{`${getYear(
-                  data?.startDate ?? ""
-                )} ${data.startRace}`}</strong>
+                <strong>{`${getYear(data?.startDate ?? "")} ${
+                  data.startRace
+                }`}</strong>
               </Link>
             </Typography>
           ) : (
-            <strong key={`${slug}-start-race`}>{`${getYear(
-              data?.startDate ?? ""
-            )} ${data.startRace}`}</strong>
+            <strong>{`${getYear(data?.startDate ?? "")} ${
+              data.startRace
+            }`}</strong>
           )}
         </td>
       </tr>
@@ -108,45 +123,45 @@ const DegreesSingleRace = ({ slug, data }: degreesRaceProps) => {
   );
 };
 
-const DegreesMultipleRaces = ({ slug, data }: degreesRaceProps) => {
+const DegreesMultipleRaces = ({ data }: degreesRaceProps) => {
   return (
     <>
-      <tr key={`${slug}-count-row`}>
-        <td key={`${slug}-empty`}>{"for:"}</td>
-        <td key={`${slug}-count`}>{`${data.count} races`}</td>
+      <tr>
+        <td>{"for:"}</td>
+        <td>{`${data.count} races`}</td>
       </tr>
-      <tr key={`${slug}-from-row`}>
-        <td key={`${slug}-from`}>{`from:`}</td>
-        <td key={`${slug}-from-race`}>
+      <tr>
+        <td>{`from:`}</td>
+        <td>
           <Typography>
             {data.startUrl ? (
               <Link href={data.startUrl}>
-                <strong key={`${slug}-start-race`}>{`${getYear(
-                  data?.startDate ?? ""
-                )} ${data.startRace}`}</strong>
+                <strong>{`${getYear(data?.startDate ?? "")} ${
+                  data.startRace
+                }`}</strong>
               </Link>
             ) : (
-              <strong key={`${slug}-start-race`}>{`${getYear(
-                data?.startDate ?? ""
-              )} ${data.startRace}`}</strong>
+              <strong>{`${getYear(data?.startDate ?? "")} ${
+                data.startRace
+              }`}</strong>
             )}
           </Typography>
         </td>
       </tr>
-      <tr key={`${slug}-to-row`}>
-        <td key={`${slug}-to`}>{`to:`}</td>
-        <td key={`${slug}-end-row`}>
+      <tr>
+        <td>{`to:`}</td>
+        <td>
           <Typography>
             {data.endUrl ? (
               <Link href={data.endUrl}>
-                <strong key={`${slug}-end-race`}>{`${getYear(
-                  data?.endDate ?? ""
-                )} ${data.endRace}`}</strong>
+                <strong>{`${getYear(data?.endDate ?? "")} ${
+                  data.endRace
+                }`}</strong>
               </Link>
             ) : (
-              <strong key={`${slug}-end-race`}>{`${getYear(
-                data?.endDate ?? ""
-              )} ${data.endRace}`}</strong>
+              <strong>{`${getYear(data?.endDate ?? "")} ${
+                data.endRace
+              }`}</strong>
             )}
           </Typography>
         </td>

@@ -134,16 +134,14 @@ test("can see multiple race ranges", async ({ page }) => {
           {
             startRace: "start1",
             endRace: "end1",
-            count: 33,
+            count: 55,
             startDate: "1234",
             endDate: "4321",
           },
           {
             startRace: "start2",
-            endRace: "end2",
-            count: 55,
             startDate: "1235",
-            endDate: "5321",
+            count: 1,
           },
         ],
       },
@@ -156,19 +154,15 @@ test("can see multiple race ranges", async ({ page }) => {
   await page.locator("#driver2").fill("Carlos Sainz Jr.");
   await page.locator("#driver2-option-0").click();
 
-  // await expect(page.locator("#degreesOfSeparation")).toContainText(
-  //   "1 degree of separation:0) Max Verstappen1) Carlo Sainz Jr."
-  // );
-
   // Assert
   await expect(page.locator("#driver-1-accordion-summary")).toHaveText(
     "0) Max Verstappen"
   );
   await expect(page.locator("#driver-2-accordion-summary")).toHaveText(
-    "1) Carlos Sainz Jr. (88 races)"
+    "1) Carlos Sainz Jr. (56 races)"
   );
   await expect(page.locator("#driver-2-accordion-details")).toHaveText(
-    "Max Verstappen was teammates with Carlos Sainz Jr.for:33 racesfrom:1234 start1to:4321 end1for:55 racesfrom:1235 start2to:5321 end2"
+    "Max Verstappen was teammates with Carlos Sainz Jr.for:55 racesfrom:1234 start1to:4321 end1for:1235 start2"
   );
 });
 
@@ -191,10 +185,6 @@ test("can see urls for drivers", async ({ page }) => {
             endRace: "end1",
             startDate: "1234",
             endDate: "4321",
-          },
-          {
-            startRace: "start2",
-            startDate: "1235",
           },
         ],
       },
@@ -249,6 +239,7 @@ test("can see urls for races", async ({ page }) => {
             startRace: "start2",
             startDate: "1235",
             startUrl: "link3",
+            count: 1,
           },
         ],
       },
