@@ -14,7 +14,6 @@ import { useState } from "react";
 import "./App.css";
 import DegreesOfSeparation from "./DegreesOfSeparation";
 import { graphql } from "./gql/gql";
-import { Driver } from "./gql/graphql";
 
 const GET_DRIVERS = graphql(`
   query GetDrivers {
