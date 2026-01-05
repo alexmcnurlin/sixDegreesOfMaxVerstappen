@@ -78,10 +78,6 @@ const App = () => {
   });
 
   const pairings = degreesData?.degreesOfSeparation;
-  // TODO: Why is the theme still light?
-  // const { mode, systemMode } = useColorScheme();
-  // console.log(mode); // "system"
-  // console.log(systemMode); // "light" |
 
   return loadingDrivers ? (
     <CircularProgress />
