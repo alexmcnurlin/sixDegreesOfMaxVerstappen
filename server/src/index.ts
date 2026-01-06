@@ -20,9 +20,16 @@ export interface MyContext {
   driversList: DriverDto[];
 }
 
+const sortFunc = (d: DriverDto) =>
+  d.teammates
+    .flatMap((tm) => tm.dates)
+    .reduce((prev, date) => date.count + prev, 0);
+
 console.log("Loading driver data...");
 const driversMap = ConnectionsService.loadDriverData(drivers as DriverDto[]);
-const driversList = Array.from(driversMap.values());
+const driversList = Array.from(driversMap.values()).toSorted(
+  (d1, d2) => sortFunc(d2) - sortFunc(d1)
+);
 console.log(`-> Loaded ${driversMap.size} drivers!`);
 
 console.log("Loading driver pairings data...");
