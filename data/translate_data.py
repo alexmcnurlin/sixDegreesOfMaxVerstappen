@@ -15,21 +15,30 @@ def register_pairing(d1, d2):
     date = d1["date"]
     race_url = d1["wikipedia_x"]
 
-    # Add the drivers to our dictionary, if they aren't in there
+    # Add the driver to our dictionary, if they aren't in there
     if d1_id not in results:
         results[d1_id]["id"] = d1_id
         results[d1_id]["url"] = driver_url
         results[d1_id]["name"] = d1["forename"] + " " + d1["surname"]
 
     d1_teammates = results[d1_id]["teammates"]
-    last_teammate = d1_teammates[-1] if d1_teammates else None
+    # Teams could have 3 or more drivers until 1992, so get every driver that d1
+    # was teammates with in their previous race
+    dates = [
+        teammates["endDate"]
+        for teammates in d1_teammates
+        if teammates["endDate"] != date
+    ]
+    last_race = sorted(dates)[-1] if dates else None
+    last_teammates = {tm["id"]: tm for tm in d1_teammates if tm["endDate"] == last_race}
 
-    # If these drivers were already teammates, update the end
-    if last_teammate and last_teammate["id"] == d2_id:
-        last_teammate["endRace"] = race
-        last_teammate["endDate"] = date
-        last_teammate["endUrl"] = race_url
-        last_teammate["count"] += 1
+    # If driver1's last teammate was driver2 in the previous race, update that range
+    # Otherwise, create a new range
+    if d2_id in last_teammates:
+        last_teammates[d2_id]["endRace"] = race
+        last_teammates[d2_id]["endDate"] = date
+        last_teammates[d2_id]["endUrl"] = race_url
+        last_teammates[d2_id]["count"] += 1
     else:
         # If they weren't teammates, add this to the list
         d1_teammates.append(
@@ -132,17 +141,29 @@ if __name__ == "__main__":
     results = defaultdict(lambda: {"teammates": []})
 
     def build_driver_data(series):
-        if len(series) == 1:
+        # TODO: Some races have multiple entries for a driver. I'm not sure why.
+        # E.g. Juan Manuel Fangio at the 1950 Italian Grand Prix
+        dropped = series.drop_duplicates(subset="driver_id")
+        if len(dropped) < len(series):
+            first = series.iloc[0]
+            print(
+                f"Found race with duplicates for a driver: {first.date.split('-')[0]} {first['name']}"
+            )
+            for d in series.forename + " " + series.surname:
+                print("   " + d)
+        if len(dropped) == 1:
             return
-        if len(series) > 2:
-            indices = range(0, len(series))
+        if len(dropped) > 2:
+            indices = range(0, len(dropped))
             for i1, i2 in combinations(indices, 2):
                 if i1 != i2:
-                    build_driver_data(series.iloc[[i1, i2]])
+                    build_driver_data(dropped.iloc[[i1, i2]])
             return
+        if len(dropped) < len(dropped.driver_id.unique()):
+            print
 
-        register_pairing(series.iloc[0], series.iloc[1])
-        register_pairing(series.iloc[1], series.iloc[0])
+        register_pairing(dropped.iloc[0], dropped.iloc[1])
+        register_pairing(dropped.iloc[1], dropped.iloc[0])
 
     pairings.apply(build_driver_data)
 
