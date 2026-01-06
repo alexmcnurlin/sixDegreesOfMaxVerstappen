@@ -28,5 +28,5 @@ type GrandPrixRange {
 
 type Query {
   drivers: [Driver!]!
-  degreesOfSeparation(driver1: String, driver2: String): [Pairing!]!
+  degreesOfSeparation(driver1: String, driver2: String): [Pairing!]
 }
