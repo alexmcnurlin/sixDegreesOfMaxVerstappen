@@ -52,7 +52,7 @@ const resolvers: Resolvers<MyContext> = {
     },
     degreesOfSeparation(parent, args, contextValue, info) {
       const retval = getPath(args.driver1, args.driver2);
-      return retval.map((p) => ({
+      return retval?.map((p) => ({
         driver1: contextValue.getDriver(p.driver1),
         driver2: contextValue.getDriver(p.driver2),
         dates: p.dates,
