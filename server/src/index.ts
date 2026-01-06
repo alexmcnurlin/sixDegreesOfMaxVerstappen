@@ -103,7 +103,7 @@ loadSchema(schemaPath, {
       context: async () => ({
         drivers: driversMap,
         pairings: pairings,
-        driversList: driversList,
+        driversList: driversList.slice(0, 20),
         getDriver: (id: string) => {
           const driver = driversMap.get(id);
           return {
