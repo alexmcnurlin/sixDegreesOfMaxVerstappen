@@ -3,6 +3,6 @@
     "serverPort": 3000,
     "serverRoute": "/graphql",
     "gqlApi": "https://master.dn4z36top1g4t.amplifyapp.com/graphql",
-    "clientDomain": "http://sixdegreesofmaxverstappen.com",
+    "clientDomain": "https://sixdegreesofmaxverstappen.com",
     "clientPort": 5173
 }
