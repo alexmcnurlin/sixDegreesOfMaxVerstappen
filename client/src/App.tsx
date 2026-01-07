@@ -74,9 +74,7 @@ const App = () => {
 
   const pairings = degreesData?.degreesOfSeparation;
 
-  return loadingDrivers ? (
-    <CircularProgress />
-  ) : (
+  return (
     <>
       <h1>
         <Typography>The Six Degrees of Max Verstappen!</Typography>
@@ -112,7 +110,10 @@ const App = () => {
       <br />
       <Card>
         How many degrees of separation are between
+        {/* TODO: Rendering all the options takes a few hundred ms. We should
+        virtualize the data if we can */}
         <Autocomplete
+          loading={loadingDrivers}
           id="driver1"
           placeholder="Max Verstappen"
           onChange={(_, value) => setDriver1(value)}
@@ -132,7 +133,14 @@ const App = () => {
           getOptionLabel={(option) => option.name}
         />
         {loadingDegrees ? (
-          <CircularProgress />
+          <CircularProgress
+            sx={{
+              marginRight: "auto",
+              marginLeft: "auto",
+              marginTop: "40px",
+              marginBottom: "40px",
+            }}
+          />
         ) : pairings?.length ? (
           <DegreesOfSeparation id="degreesOfSeparation" pairings={pairings} />
         ) : driver1 && driver2 ? (
