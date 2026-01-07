@@ -9,7 +9,9 @@ import {
 } from "@mui/joy";
 import { Maybe, GetDegreesOfSeparationQuery } from "./gql/graphql";
 
-type Pairing = GetDegreesOfSeparationQuery["degreesOfSeparation"][0];
+type Pairing = NonNullable<
+  GetDegreesOfSeparationQuery["degreesOfSeparation"]
+>[0];
 type Data = NonNullable<Pairing["dates"]>[0];
 
 interface DegreesOfSeparationProps {
