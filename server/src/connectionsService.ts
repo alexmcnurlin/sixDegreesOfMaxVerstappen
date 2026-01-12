@@ -98,11 +98,17 @@ export class ConnectionsService {
     };
 
     const flatMap = degrees.flatMap((d) => d);
-    console.log(
-      `Largest Separation: ${flatMap
-        .filter((d) => d != Infinity)
-        .reduce((prev, curr) => Math.max(prev, curr))}`
-    );
+    const maximum = flatMap
+      .filter((d) => d != Infinity)
+      .reduce((prev, curr) => Math.max(prev, curr));
+    console.log(`Largest Separation: ${maximum}`);
+    degrees.forEach((di, i) => {
+      di.forEach((dj, j) => {
+        if (dj == maximum) {
+          console.log(`   * ${drivers[i].name} -> ${drivers[j].name}`);
+        }
+      });
+    });
     console.log(
       `Average: ${
         flatMap
