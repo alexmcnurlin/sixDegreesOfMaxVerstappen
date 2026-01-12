@@ -135,6 +135,7 @@ if __name__ == "__main__":
         .merge(round_entries, left_on="round_entry_id", right_on="id")
         .merge(team_drivers, left_on="team_driver_id", right_on="id")
         .merge(drivers, left_on="driver_id", right_on="id")
+        .sort_values("date")
     )
 
     pairings = all_sessions.groupby(["session_id", "team_id"], sort=False)
