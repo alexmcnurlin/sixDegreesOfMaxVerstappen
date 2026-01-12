@@ -3,6 +3,6 @@
     "serverRoute": "/graphql",
     "serverPort": 5172,
     "gqlApi": "http://localhost:5172/graphql",
-    "clientDomain": "http://localhost",
+    "clientDomain":[ "http://localhost"],
     "clientPort": 5173
 }
