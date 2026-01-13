@@ -20,13 +20,14 @@ export interface MyContext {
   driversList: DriverDto[];
 }
 
+console.log("Loading driver data...");
+const driversMap = ConnectionsService.loadDriverData(drivers as DriverDto[]);
 const sortFunc = (d: DriverDto) =>
   d.teammates
     .flatMap((tm) => tm.dates)
     .reduce((prev, date) => date.count + prev, 0);
-
-console.log("Loading driver data...");
-const driversMap = ConnectionsService.loadDriverData(drivers as DriverDto[]);
+// Sort the drivers by the total number of races. This will put more well-known
+// drivers at the top.
 const driversList = Array.from(driversMap.values()).toSorted(
   (d1, d2) => sortFunc(d2) - sortFunc(d1)
 );
@@ -45,6 +46,7 @@ const getPath = ConnectionsService.buildDegreesOfSeparationMap(
 );
 console.timeEnd("-> Build Degrees of Separation Map in");
 
+// Fufill our api endpoints.
 const resolvers: Resolvers<MyContext> = {
   Query: {
     drivers(parent, args, contextValue, info) {
@@ -59,22 +61,23 @@ const resolvers: Resolvers<MyContext> = {
       }));
     },
   },
+  // For any endpoint returning the `Driver` type, fill in the `teammates` field
+  // based on the other fields.
   Driver: {
     teammates(parent, args, contextValue, info) {
       const driver = contextValue.drivers.get(parent.id);
-      const pairings = driver.teammates.map((tm) =>
-        contextValue.pairings.get(`${driver.id}+${tm.id}`)
-      );
-      return pairings.map((p) => ({
-        driver: contextValue.getDriver(p.driver2),
-        dates: p.dates,
-      }));
+      return driver.teammates
+        .map((tm) => contextValue.pairings.get(`${driver.id}+${tm.id}`))
+        .map((p) => ({
+          driver: contextValue.getDriver(p.driver2),
+          dates: p.dates,
+        }));
     },
   },
 };
 
+// Configure the graphql server
 const schemaPath = path.join(__dirname, "./schema.graphql");
-
 loadSchema(schemaPath, {
   loaders: [new GraphQLFileLoader()],
 }).then(async (typeDefs) => {
@@ -98,6 +101,7 @@ loadSchema(schemaPath, {
   app.use(
     config["serverRoute"],
     cors<cors.CorsRequest>({
+      // Only allow requests from our client, or the apollo graphql studio
       origin: [...corsAllowUrls, "https://studio.apollographql.com"],
     }),
     express.json(),

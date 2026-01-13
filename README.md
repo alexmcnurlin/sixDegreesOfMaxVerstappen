@@ -43,10 +43,3 @@ To run everything individually
 ### Test
 
 From the `server/` or `client/` folders: `npm test`
-
-## TODO
-
-Here's a list of TODO items that I want to complete before I'd consider this project presentable
-
-- Favicon
-- Do one last sweep of the code to make sure it's how I like it

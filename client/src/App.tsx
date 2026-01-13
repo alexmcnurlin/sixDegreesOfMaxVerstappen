@@ -143,7 +143,7 @@ const App = () => {
           />
         ) : pairings?.length ? (
           <DegreesOfSeparation id="degreesOfSeparation" pairings={pairings} />
-        ) : driver1 && driver2 ? (
+        ) : driver1 && driver2 && driver1?.id != driver2?.id ? (
           "There is no connection"
         ) : (
           ""

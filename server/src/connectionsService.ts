@@ -34,8 +34,8 @@ export class ConnectionsService {
   }
 
   /**
-   * Build an arrays that will map out the number of degrees between any two
-   * drivers, and the path between them.
+   * Create a function that will map the degrees of separation from one driver
+   * to another.
    *
    * The map is built using the Floyd-Warshall algorithm with path
    * reconstruction described here
@@ -45,6 +45,7 @@ export class ConnectionsService {
     drivers: DriverDto[],
     pairings: PairingDto[]
   ) {
+    // Initialize the degrees array and our pathMap (to reconstruct the path)
     const length = drivers.length;
     const indexMap: Record<string, number> = {};
     drivers.forEach(({ id }, i) => (indexMap[id] = i));
@@ -79,16 +80,20 @@ export class ConnectionsService {
       }
     }
 
+    // Define a closure that will reconstruct the path between any two drivers
     const getPath = (start: string, end: string) => {
       const u = indexMap[start];
       let v = indexMap[end];
       if (start == end) {
         return [];
       }
+      // Not all drivers are connected to all others. Return null in that case.
       if (pathMap[u][v] == null) {
         return null;
       }
       const path: PairingDto[] = [];
+      // The entry at x, y is the LAST degree between drivers x and y. Look at
+      // the `.driver1` field to get the second to last point, ect.
       while (u != v) {
         const p = pathMap[u][v];
         path.unshift(p);
@@ -97,6 +102,7 @@ export class ConnectionsService {
       return path;
     };
 
+    // Print a few statistics
     const flatMap = degrees.flatMap((d) => d);
     const maximum = flatMap
       .filter((d) => d != Infinity)

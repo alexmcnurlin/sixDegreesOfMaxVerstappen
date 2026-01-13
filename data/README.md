@@ -4,6 +4,7 @@ This folder contains the source used to genererate the [drivers.json](../server/
 
 ## Setup
 
+- Install python
 - Recommended: Create a python virtual environment
   - `python -m pip .venv`
   - `source ./.venv/bin/activate` or `& .\.venv\bin\activate.ps1`
@@ -15,4 +16,4 @@ This folder contains the source used to genererate the [drivers.json](../server/
 ## How to run
 
 From this folder:
-`python ./translate_data.py --output ../server/drivers.json --input <path_to_csv>`
+`python ./translate_data.py --input <path_to_csv> ../server/src/drivers.json `

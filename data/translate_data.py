@@ -7,7 +7,11 @@ from pathlib import Path
 import pandas as pd
 
 
-def register_pairing(d1, d2):
+def register_pairing(d1, d2, results):
+    """Record the pair of drivers as teammates.
+
+    Builds a range of when drivers were teammates.
+    """
     d1_id = str(d1["driver_id"])
     d2_id = str(d2["driver_id"])
     driver_url = d1["wikipedia_y"]
@@ -22,8 +26,8 @@ def register_pairing(d1, d2):
         results[d1_id]["name"] = d1["forename"] + " " + d1["surname"]
 
     d1_teammates = results[d1_id]["teammates"]
-    # Teams could have 3 or more drivers until 1992, so get every driver that d1
-    # was teammates with in their previous race
+    # Teams could have 3 or more drivers until 1992, so find every driver that
+    # d1 was teammates with in their previous race
     dates = [
         teammates["endDate"]
         for teammates in d1_teammates
@@ -123,18 +127,19 @@ if __name__ == "__main__":
     all_sessions = (
         # Get the results of every session
         session_entries.merge(sessions, how="left", left_on="session_id", right_on="id")
-        # Filter out races
+        # Only include Grands Prix (i.e. remoe Qualifying, Free Practice, Sprint races)
         .query("type == 'R'")
-        # Only include race starts. We have to manually list out the statuses to exclude
-        # There are a few with "Withdrew" or "Illness" that did start the race
-        # If any driver started the race, but got sick during lap 1 chaos, oh well!
+        # Only include race starts. There are a few "Withdrew" or "Injury" that
+        # did start the race, so we also look at laps completed.
         .query(
             "(laps_completed > 0) or status not in ['Withdrew', 'Injury', 'Physical', 'Injured', 'Driver unwell', 'Disqualified', 'Excluded', 'Safety concerns', 'Underweight', 'Safety', 'Did not start', 'Illness']"
         )
+        # Include the info for driver, team, track, ect.
         .merge(rounds, left_on="round_id", right_on="id")
         .merge(round_entries, left_on="round_entry_id", right_on="id")
         .merge(team_drivers, left_on="team_driver_id", right_on="id")
         .merge(drivers, left_on="driver_id", right_on="id")
+        # The date is in YYYY-MM-DD, so we can use a Lexographic sort to sort the date!
         .sort_values("date")
     )
 
@@ -142,33 +147,35 @@ if __name__ == "__main__":
     results = defaultdict(lambda: {"teammates": []})
 
     def build_driver_data(series):
-        # TODO: Some races have multiple entries for a driver. I'm not sure why.
+        """
+        For a given team/race, record that those drivers were teammates
+        """
+        # Some races have multiple entries for a driver. I'm not sure why.
         # E.g. Juan Manuel Fangio at the 1950 Italian Grand Prix
         dropped = series.drop_duplicates(subset="driver_id")
         if len(dropped) < len(series):
             first = series.iloc[0]
             print(
-                f"Found race with duplicates for a driver: {first.date.split('-')[0]} {first['name']}"
+                f"Found race with duplicated driver: {first.date.split('-')[0]} {first['name']}"
             )
             for d in series.forename + " " + series.surname:
                 print("   " + d)
         if len(dropped) == 1:
             return
+        # For 3+ drivers per team, recurse on every combination of drivers
         if len(dropped) > 2:
             indices = range(0, len(dropped))
             for i1, i2 in combinations(indices, 2):
-                if i1 != i2:
-                    build_driver_data(dropped.iloc[[i1, i2]])
+                build_driver_data(dropped.iloc[[i1, i2]])
             return
-        if len(dropped) < len(dropped.driver_id.unique()):
-            print
 
-        register_pairing(dropped.iloc[0], dropped.iloc[1])
-        register_pairing(dropped.iloc[1], dropped.iloc[0])
+        register_pairing(dropped.iloc[0], dropped.iloc[1], results)
+        register_pairing(dropped.iloc[1], dropped.iloc[0], results)
 
+    # Build the driver data for every group of driver/team
     pairings.apply(build_driver_data)
 
-    # The defaultDict leaves an empty entry in the final collection. Remove it
+    # The defaultDict leaves an empty entry in the collection. Remove it
     drivers_list = [collapse_teammates(d) for d in results.values() if "id" in d]
 
     print(f"Dumping {len(drivers_list)} drivers to {args.output}")
