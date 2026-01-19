@@ -1,5 +1,7 @@
 # Six Degrees of Verstappen
 
+Hosted at https://www.sixdegreesofmaxverstappen.com
+
 ## Introduction
 
 You've likely heard of the [six degrees of Kevin Bacon](https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon) - Most actors have been in a movie with someone who's been in a movie with someone who's been in a movie with Kevin Bacon.
@@ -24,7 +26,7 @@ Project structure
 
 1. [Install `Node.js`](https://nodejs.org/en/download)
 2. Run `npm install` in the CLI
-   - There are `package.json` files in the root of the project, the `server`, and the `client` folders. Running `npm install` will install packages for all of them.
+   - There are `package.json` files in the root of the project, the `server`, and the `client` folders. Running `npm install` in the root folder will install packages for all of them.
 
 ### Run development environment
 
