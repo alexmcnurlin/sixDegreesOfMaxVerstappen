@@ -2,6 +2,8 @@
 
 Hosted at https://www.sixdegreesofmaxverstappen.com
 
+This website was made without the use of generative AI (aside from the inevitable AI overview in Google search)
+
 ## Introduction
 
 You've likely heard of the [six degrees of Kevin Bacon](https://en.wikipedia.org/wiki/Six_Degrees_of_Kevin_Bacon) - Most actors have been in a movie with someone who's been in a movie with someone who's been in a movie with Kevin Bacon.
