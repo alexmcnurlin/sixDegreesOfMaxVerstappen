@@ -126054,10 +126054,10 @@
                         "startDate": "2023-03-05",
                         "startRace": "Bahrain Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2023_Bahrain_Grand_Prix",
-                        "count": 69,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 74,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -127740,10 +127740,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 29,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -128698,10 +128698,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 27,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -128884,6 +128884,20 @@
                         "endDate": "2024-12-08",
                         "endRace": "Abu Dhabi Grand Prix",
                         "endUrl": "https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix"
+                    }
+                ]
+            },
+            {
+                "id": "820",
+                "dates": [
+                    {
+                        "startDate": "2026-03-08",
+                        "startRace": "Australian Grand Prix",
+                        "startUrl": "https://en.wikipedia.org/wiki/2026_Australian_Grand_Prix",
+                        "count": 5,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -129348,6 +129362,20 @@
                         "endDate": "2024-12-08",
                         "endRace": "Abu Dhabi Grand Prix",
                         "endUrl": "https://en.wikipedia.org/wiki/2024_Abu_Dhabi_Grand_Prix"
+                    }
+                ]
+            },
+            {
+                "id": "815",
+                "dates": [
+                    {
+                        "startDate": "2026-03-08",
+                        "startRace": "Australian Grand Prix",
+                        "startUrl": "https://en.wikipedia.org/wiki/2026_Australian_Grand_Prix",
+                        "count": 5,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -129886,6 +129914,20 @@
                         "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
                     }
                 ]
+            },
+            {
+                "id": "864",
+                "dates": [
+                    {
+                        "startDate": "2026-03-08",
+                        "startRace": "Australian Grand Prix",
+                        "startUrl": "https://en.wikipedia.org/wiki/2026_Australian_Grand_Prix",
+                        "count": 5,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
+                    }
+                ]
             }
         ],
         "id": "831",
@@ -129985,10 +130027,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 28,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130270,10 +130312,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 29,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130408,10 +130450,10 @@
                         "startDate": "2023-03-05",
                         "startRace": "Bahrain Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2023_Bahrain_Grand_Prix",
-                        "count": 69,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 74,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130585,10 +130627,10 @@
                         "startDate": "2025-05-18",
                         "startRace": "Emilia Romagna Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Emilia_Romagna_Grand_Prix",
-                        "count": 18,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 23,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130700,10 +130742,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 29,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130770,10 +130812,10 @@
                         "startDate": "2023-03-05",
                         "startRace": "Bahrain Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2023_Bahrain_Grand_Prix",
-                        "count": 70,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 73,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130861,10 +130903,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 28,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -130944,10 +130986,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 29,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -131318,10 +131360,10 @@
                         "startDate": "2023-03-05",
                         "startRace": "Bahrain Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2023_Bahrain_Grand_Prix",
-                        "count": 70,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 73,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -131373,6 +131415,20 @@
                         "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
                     }
                 ]
+            },
+            {
+                "id": "865",
+                "dates": [
+                    {
+                        "startDate": "2026-03-08",
+                        "startRace": "Australian Grand Prix",
+                        "startUrl": "https://en.wikipedia.org/wiki/2026_Australian_Grand_Prix",
+                        "count": 4,
+                        "endDate": "2026-05-03",
+                        "endRace": "Miami Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Miami_Grand_Prix"
+                    }
+                ]
             }
         ],
         "id": "858",
@@ -131413,10 +131469,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 29,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -131448,10 +131504,10 @@
                         "startDate": "2025-05-18",
                         "startRace": "Emilia Romagna Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Emilia_Romagna_Grand_Prix",
-                        "count": 18,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 23,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -131510,6 +131566,20 @@
                         "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
                     }
                 ]
+            },
+            {
+                "id": "831",
+                "dates": [
+                    {
+                        "startDate": "2026-03-08",
+                        "startRace": "Australian Grand Prix",
+                        "startUrl": "https://en.wikipedia.org/wiki/2026_Australian_Grand_Prix",
+                        "count": 5,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
+                    }
+                ]
             }
         ],
         "id": "864",
@@ -131525,10 +131595,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 29,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -131546,10 +131616,10 @@
                         "startDate": "2025-03-16",
                         "startRace": "Australian Grand Prix",
                         "startUrl": "https://en.wikipedia.org/wiki/2025_Australian_Grand_Prix",
-                        "count": 24,
-                        "endDate": "2025-12-07",
-                        "endRace": "Abu Dhabi Grand Prix",
-                        "endUrl": "https://en.wikipedia.org/wiki/2025_Abu_Dhabi_Grand_Prix"
+                        "count": 27,
+                        "endDate": "2026-05-24",
+                        "endRace": "Canadian Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Canadian_Grand_Prix"
                     }
                 ]
             }
@@ -131557,5 +131627,26 @@
         "id": "862",
         "url": "https://en.wikipedia.org/wiki/Gabriel_Bortoleto",
         "name": "Gabriel Bortoleto"
+    },
+    {
+        "teammates": [
+            {
+                "id": "858",
+                "dates": [
+                    {
+                        "startDate": "2026-03-08",
+                        "startRace": "Australian Grand Prix",
+                        "startUrl": "https://en.wikipedia.org/wiki/2026_Australian_Grand_Prix",
+                        "count": 4,
+                        "endDate": "2026-05-03",
+                        "endRace": "Miami Grand Prix",
+                        "endUrl": "https://en.wikipedia.org/wiki/2026_Miami_Grand_Prix"
+                    }
+                ]
+            }
+        ],
+        "id": "865",
+        "url": "https://en.wikipedia.org/wiki/Arvid_Lindblad",
+        "name": "Arvid Lindblad"
     }
 ]
