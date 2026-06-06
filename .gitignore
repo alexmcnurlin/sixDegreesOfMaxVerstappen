@@ -21,6 +21,8 @@ server/src/schema.graphql
 
 # Python virtual environment
 .venv
+__pycache__/
+*.pyc
 
 # Source data. Not sure if we can commit this
 formula-1-world-championship-1950-2020/
